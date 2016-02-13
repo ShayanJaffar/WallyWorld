@@ -1,4 +1,10 @@
 
 public class Controller {
-  print
+	public static void main(String args[]){
+		
+	}
+	
+	public void login(){
+		
+	}
 }
