@@ -1,8 +1,14 @@
-import java.util.*;
+
+import com.google.gson.annotations.Expose;
 public abstract class User {
+	//All information pertaining to all users
+	@Expose
 	String name;
+	@Expose
 	String email;
+	@Expose
 	String phone;
+	@Expose
 	String username;
 	
 	String getName(){
