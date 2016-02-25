@@ -31,35 +31,91 @@ public class Database {
 	/**
 	 * returns the user with the specified username
 	 * @param username of the desired user
+	 * @param password of the desired user
 	 * @return the user
 	 */
-	public User getUser(String username) {
+	public User getUser(String username, String password) {
 		return userMap.get(username);
 	}
 	/**
-	 * returns the employer
-	 * @return employer
+	 * returns the employer's contact info
+	 * @return String
 	 */
-	public Employer getEmployer() {
-		return employers.getFirst();
+	public String getEmployerContactInfo() {
+		return employers.getFirst().contactInfo();
 	}
 	/**
-	 * Returns list of all employees
-	 * @return list of employees
+	 * Returns an employees contact info
+	 * @param uN username
+	 * @return String
 	 */
-	public LinkedList<Employee> getEmployees() {
-		return employees;
-	}
-	/**
-	 * Returns a certain Employee
-	 * @param uN username of desired employee
-	 * @return employee with username uN
-	 */
-	public Employee getEmployee(String uN) {
+	public String getEmployeeContactInfo(String uN) {
 		User u = userMap.get(uN);
 		if(u instanceof Employee)
-			return ((Employee)u);
-		return null;
+			return u.contactInfo();
+		return "No employee has that username";
 	}
-
+	/**
+	 * Returns all employees contact info
+	 * @return String
+	 */
+	public String getEmployeeContactInfo () {
+		String string = "";
+		for(Employee e : employees)
+			string += e.contactInfo() + "\n\n";
+		return string;
+	}
+	/**
+	 * Returns all employees names and usernames (\tname: username\n)
+	 * @return String
+	 */
+	public String getEmployeeNamesUsernames () {
+		String string = "";
+		for(Employee e : employees)
+			string += "\t" + e.getName() + ": " + e.getUsername() + "\n";
+		return string;
+	}
+	/**
+	 * returns true if employee with username exists, false otherwise
+	 * @param username
+	 * @return
+	 */
+	public boolean doesEmployeeExist (String username) {
+		return (userMap.get(username) instanceof Employee);
+		//User u = userMap.get(username);
+		//return (u instanceof Employee);
+	}
+	/**
+	 * returns and integer array for the total number of people covering the current shift
+	 * @return
+	 */
+	public int[] mostRecentAsIntArray () {
+		int[] array = new int[19];
+		int[] eArray = null;
+		for(Employee e : employees) {
+			eArray = e.shiftAsIntArray();
+			for (int i = 0; i < 19; i++)
+				if (eArray != null)
+					array[i] += eArray[i];
+		}
+		return array;
+	}
+	/**
+	 * assigns/removes an employee to/from a shift
+	 * @param username
+	 * @param shift
+	 * @param value
+	 * @return 1 if successful, 0 if already assigned/not assigned, -1 if no user with that username
+	 */
+	public int assignShift (String username, int shift, boolean value) {
+		User u = userMap.get(username);
+		if (u instanceof Employee) {
+			if (((Employee) u).assignShift(shift, value))
+				return 1;
+			else
+				return 0;
+		}
+		else
+			return -1;
+	}
 }

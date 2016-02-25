@@ -42,4 +42,8 @@ public abstract class User {
 	void setUsername(String u){
 		username = u;
 	}
+	
+	public String contactInfo () {
+		return "\tName: " + name + "\n\tEmail: " + email + "\n\tPhone: " + phone;
+	}
 }

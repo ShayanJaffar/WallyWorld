@@ -14,4 +14,13 @@ public class Schedule {
 	public WeeklySchedule getNewestShift() {
 		return shifts.getLast();
 	}
+	
+	public int[] shiftAsIntArray () {return shifts.getLast().listAsIntArray();}
+	public boolean assignShift (int i, boolean value) {
+		return shifts.getLast().assignShift(i, value);
+	}
+	
+	public String toString () {return shifts.getLast().toString();}
+	
+	//public String toString (DateStamp day) {return the weekly shift that contains day}
 }

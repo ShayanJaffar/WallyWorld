@@ -1,8 +1,6 @@
-import java.util.LinkedList;
 import java.util.Scanner;
-//testing 1, 2, 3
+
 public class CMDLine {
-	
 	public static Scanner input = new Scanner(System.in);
 	UIController uic;
     
@@ -19,12 +17,12 @@ public class CMDLine {
 	 *  Gets Employee input and accesses functions accordingly
 	 * 
 	 */
-	private void employeeMainMenu() {
+	public void employeeMainMenu() {
         while (true) {
         	print("  1) Show Schedule\n"
                 + "  2) Show Employer Contact Info\n"
-                + "  3) Logout\n ");
-        	int choice = getIntInput("\nOption: ");
+                + "  3) Logout ");
+        	int choice = getIntInput("Option: ");
             switch(choice) {
             	case 1:
             		printSchedule();
@@ -54,54 +52,14 @@ public class CMDLine {
     * Prints Employer's contact information
     */
 	private void printEmployerInfo() {
-		Employer er = uic.getEmployer(); 
-		System.out.println("\nEmployer's contact information:"
-				+ "\n\tName: " + er.getName()
-				+ "\n\tEmail: " + er.getEmail()
-				+ "\n\tPhone: " + er.getPhone() + "\n");
+		print("\nEmployer's contact information:\n" + uic.getEmployerContactInfo());
 	}
 
 	/**
 	 * Prints the current user's current schedule
 	 */
 	private void printSchedule() {
-		Employee e = (Employee)uic.getCurrentUser();
-		WeeklySchedule wS = e.getSchedule().getNewestShift();
-		System.out.println(printDateStamp(wS.getdateStamp()) + printWScheduleTable(wS));
-	}
-
-	/**
-	 * Returns a formated table of a schedule
-	 * @param wS specified weekly schedule to be printed
-	 * @return formated table
-	 */
-	private String printWScheduleTable(WeeklySchedule wS) {
-		boolean[] s = wS.getShift();
-		return "\n\tMon Tue Wed Thu Fri Sat Sun" + 
-		"\nShift 1\t "+ displayBool(s[0]) + "   " + displayBool(s[3])+ "   " + displayBool(s[6])+ "   " + displayBool(s[9])+ "   " + displayBool(s[12])+ "   " + displayBool(s[15])+ "   " + displayBool(s[17]) +
-		"\nShift 2\t "+ displayBool(s[1]) + "   " + displayBool(s[4])+ "   " + displayBool(s[7])+ "   " + displayBool(s[10])+ "   " + displayBool(s[13])+ "   " + displayBool(s[16])+ "   " + displayBool(s[18]) +
-		"\nShift 3\t "+ displayBool(s[2]) + "   " + displayBool(s[5])+ "   " + displayBool(s[8])+ "   " + displayBool(s[11])+ "   " + displayBool(s[14]) + "\n";
-	}
-	
-	/**
-	 * print value for a boolean value
-	 * @param b boolean value
-	 * @return corresponding string for the boolean
-	 */
-	private String displayBool(boolean b) {
-		if(b)
-			return "X";
-		return "-";
-	}
-
-	/**
-	 * formats the date a schedule was issued
-	 * @param dS 
-	 * @return
-	 */
-	private String printDateStamp(DateStamp dS) {
-		return "\nWeek of " + dS.getMonth()+ " " + dS.getDay() + ", " 
-	+ dS.getYear() + " Shift Schedule:";
+		print(uic.getCurrentUserSchedule());
 	}
 
 	/**
@@ -109,7 +67,7 @@ public class CMDLine {
 	 * Gets Employer input and accesses functions accordingly
 	 * 
 	 */
-	private void employerMainMenu() {
+	public void employerMainMenu() {
   
         while (true) {
         	print("  1) Display Employee Usernames\n"
@@ -151,18 +109,8 @@ public class CMDLine {
 	 * Displays shift coverage in a table
 	 */
 	private void showShiftsCovered() {
-		int[] s = new int[19];
-		LinkedList<Employee> emps = uic.getEmployeeList();
-		for(Employee e : emps) {
-			boolean[] shift = e.getSchedule().getNewestShift().getShift();
-			if(shift != null) {
-				for(int i = 0; i < 19; i++) {
-					if(shift[i])
-						s[i]++;
-				}
-			}
-		}
-		System.out.println("\n\tMon Tue Wed Thu Fri Sat Sun" + 
+		int[] s = uic.mostRecentAsIntArray();
+		print("\n\tMon Tue Wed Thu Fri Sat Sun" + 
 		"\nShift 1\t "+ s[0] + "   " + s[3]+ "   " + s[6]+ "   " + s[9]+ "   " + s[12]+ "   " + s[15]+ "   " + s[17] +
 		"\nShift 2\t "+ s[1] + "   " + s[4]+ "   " + s[7]+ "   " + s[10]+ "   " + s[13]+ "   " + s[16]+ "   " + s[18] +
 		"\nShift 3\t "+ s[2] + "   " + s[5]+ "   " + s[8]+ "   " + s[11]+ "   " + s[14] + "\n");
@@ -184,10 +132,9 @@ public class CMDLine {
 			if((i+1) % 4 == 0)
 				System.out.print("\n");
 		}
-		System.out.println("\n");
+		print("\n\n");
 		
 	}
-
 	
 	/**
 	 * Assigns or removes a shift to/from an employee
@@ -196,62 +143,65 @@ public class CMDLine {
 	private void assignShift(boolean assign) {
 		printShiftConstants();
 		String username = getStringInput("Employees Username: ");
-		int shiftNumber = getIntInput("Shift Number: ");
-		Employee e = uic.getEmployee(username);
+		int shiftNumber = getIntInput("Shift Number: ", 0, 19);
+		int success = uic.assignShift(username, shiftNumber, assign);
 		print("");
-		if(e == null) 
+		if(success == -1) 
 			print("Employee Doesn't Exist");
-		else if(shiftNumber < 0 || shiftNumber > 19) 
-			print("Invalid Shift Number");	
-		else if(e.getSchedule().getNewestShift().getShift()[shiftNumber] && assign) 
-			print("Employee is already scheduled for this shift.");	
-		else if(!e.getSchedule().getNewestShift().getShift()[shiftNumber] && !assign) 
-			print("Employee is already not scheduled for this shift.");	
-		else if(e.getSchedule().getNewestShift().getShift()[shiftNumber] && !assign) {
-			e.getSchedule().getNewestShift().getShift()[shiftNumber] = false;
-			print("Employee removed from shift.");	
-		}
-		else {
-			e.getSchedule().getNewestShift().getShift()[shiftNumber] = true;
+		else if((success == 0) && assign) 
+			print("Employee is already scheduled for this shift.");
+		else if((success == 0) && !assign) 
+			print("Employee is already not scheduled for this shift.");
+		else if((success == 1) && assign)
 			print("Employee assigned to shift.");
-		}
+		else if((success == 1) && !assign)
+			print("Employee removed from shift.");
 	}
 
 	/**
 	 * Displays all employee names and usernames
 	 */
 	private void displayEmployeeUsernames() {
-		LinkedList<Employee> employees = uic.getEmployeeList();
 		print("Employee List:");
-		for(Employee e : employees)
-			print("\t" + e.getName() + ": " + e.getUsername());	
-		print("");
+		print(uic.getEmployeeNamesUsernames());
 	}
 	
 	/**
 	 * Displays all employee contact information
 	 */
 	private void displayEmployeeInformation() {
-		LinkedList<Employee> employees = uic.getEmployeeList();
 		print("Employee List:");
-		for(Employee e : employees)
-			print("\t" + e.getName() + ": " + e.getEmail() + ", " + e.getPhone());	
-		print("");
+		print(uic.getEmployeeContactInfo());
 	}
 	
 	/**
 	 * Used to get a number input from user
 	 * @param prompt text shown to user
-	 * @return number entered
+	 * @return number entered (-1 if not an integer)
 	 */
 	private int getIntInput(String prompt) {
-			System.out.print(prompt);
-			try {
-				return input.nextInt();
-			} catch (Exception e) {
-				input.next();
-				return -1;
-			}
+		System.out.print(prompt);
+		try {
+			String string = input.nextLine();
+			return Integer.parseInt(string);
+		} catch (Exception e) {
+			print("invalid input");
+			return -1;
+		}
+	}
+	/**
+	 * Used to get a number input from user within the given range
+	 * @param prompt text shown to user
+	 * @return number entered (-1 if not an integer or outside of range)
+	 */
+	private int getIntInput(String prompt, int min, int max) {
+		int value = getIntInput(prompt);
+		if (value >= min && value <= max) {return value;}
+		else if (value != -1) {
+			print("input outside of range");
+			return -1;
+		}
+		else {return -1;}
 	}
 	
 	/**
@@ -271,26 +221,38 @@ public class CMDLine {
 	 * prints a String
 	 * @param string what to print
 	 */
-	private void print(String string) {
+	public void print(String string) {
 		System.out.println(string);
 	}
 	
 	/**
-	 * Beginning of program
-	 * User logs in
-	 * System decides whether to access employer functions or employee functions
+	 * gets a username
+	 * @return string username
 	 */
-	public void startTerminal() {
+	public String getUsername () {
+		return getStringInput("Enter username: ");
+	}
+	/**
+	 * gets a password
+	 * @return string password
+	 */
+	public String getPassword () {
+		return getStringInput("Enter password: ");
+	}
+	/**
+	 * allows the user to switch ui mode
+	 * @return new mode to switch to (-1 if do not switch)
+	 */
+	public int getModeSwitch () {
+		int value = getIntInput("\nWould you like to switch user interface mode?\n" + 
+				UIController.COMMAND_LINE_MODE + " = command line, " + 
+				UIController.GUI_MODE + " = gui\n", 0, 1);
+		return value;
+	}
+	/**
+	 * prints the welcome text
+	 */
+	public void showWelcome () {
 		print("Welcome to WallyWorld!");
-		while(uic.getCurrentUser() == null) {
-			uic.login(getStringInput("\nEnter username: "), "");
-			if(uic.getCurrentUser() == null)
-				print("invalid username");
-		} 
-		
-		if(uic.getCurrentUser() instanceof Employee)
-			employeeMainMenu();
-		else
-			employerMainMenu();
-	}	
+	}
 }

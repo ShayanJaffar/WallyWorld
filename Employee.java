@@ -10,10 +10,16 @@ public class Employee extends User{
 		schedule = sched;
 	}
 	public Schedule getSchedule() {
-		
 		return schedule;
 	}
 	public Object getScheduleID() {
 		return scheduleID;
+	}
+	public int[] shiftAsIntArray () {return schedule.shiftAsIntArray();}
+	public boolean assignShift (int i, boolean value) {
+		return schedule.assignShift(i, value);
+	}
+	public String schedule () {
+		return schedule.toString();
 	}
 }

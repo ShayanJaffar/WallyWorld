@@ -17,5 +17,16 @@ public class DateStamp {
 	public int getYear() {
 		return year;
 	}
+	
+	public boolean equals (DateStamp other) {
+		if (month == other.month && day == other.day && year == other.year) {
+			return true;
+		}
+		else {return false;}
+	}
+	
+	public String toString () {
+		return "\nWeek of " + month + " " + day + ", " + year;
+	}
 }
 

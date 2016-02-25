@@ -8,7 +8,6 @@ import java.io.Reader;
 import java.io.Writer;
 
 public class Controller {
-	
 	//Where the database is stored
     private static final String DEFUALT_FILE_PATH = "./data/data.json";
     private static String filePath;
@@ -69,6 +68,7 @@ public class Controller {
      */
     public static void endAll(Database database) {
     	save(database);
+    	CMDLine.input.close();
     	System.exit(0);
     }
 
