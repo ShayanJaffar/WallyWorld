@@ -8,7 +8,7 @@ public class Database {
 	@Expose
 	LinkedList<Employee> employees = new LinkedList<>();
 	@Expose
-	LinkedList<Employer> employers = new LinkedList<>();
+	LinkedList<Manager> managers = new LinkedList<>();
 	@Expose
 	LinkedList<Schedule> schedules = new LinkedList<>();
 	
@@ -25,7 +25,7 @@ public class Database {
 			e.setSchedule(scheduleMap.get(e.getScheduleID()));
 			userMap.put(e.getUsername(),e);
 		}
-		for(Employer er : employers)
+		for(Manager er : managers)
 			userMap.put(er.getUsername(),er);
 	}
 	/**
@@ -63,11 +63,11 @@ public class Database {
 		return list;
 	}
 	/**
-	 * returns the employer
-	 * @return the employer
+	 * returns the manager
+	 * @return the manager
 	 */
-	public Employer getEmployer() {
-		return employers.getFirst().clone();
+	public Manager getManager() {
+		return managers.getFirst().clone();
 	}
 	public boolean updateUser (User u) {
 		User old = userMap.get(u.getUsername());

@@ -20,7 +20,7 @@ public class CMDLine {
 	public void employeeMainMenu() {
         while (true) {
         	print("  1) Show Schedule\n"
-                + "  2) Show Employer Contact Info\n"
+                + "  2) Show Manager Contact Info\n"
                 + "  3) Logout ");
         	int choice = getIntInput("Option: ");
             switch(choice) {
@@ -28,7 +28,7 @@ public class CMDLine {
             		printSchedule();
             		break;
             	case 2:
-            		printEmployerInfo();
+            		printManagerInfo();
             		break;
             	case 3:
             		logout();
@@ -49,10 +49,10 @@ public class CMDLine {
 	}
     
    /**
-    * Prints Employer's contact information
+    * Prints Manager's contact information
     */
-	private void printEmployerInfo() {
-		print("\nEmployer's contact information:\n" + uic.getEmployerContactInfo() + "\n");
+	private void printManagerInfo() {
+		print("\nManager's contact information:\n" + uic.getManagerContactInfo() + "\n");
 	}
 
 	/**
@@ -63,11 +63,11 @@ public class CMDLine {
 	}
 
 	/**
-	 * Accessed if user is an employer
-	 * Gets Employer input and accesses functions accordingly
+	 * Accessed if user is an manager
+	 * Gets Manager input and accesses functions accordingly
 	 * 
 	 */
-	public void employerMainMenu() {
+	public void managerMainMenu() {
   
         while (true) {
         	print("  1) Display Employee Usernames\n"

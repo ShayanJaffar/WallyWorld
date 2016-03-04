@@ -26,8 +26,8 @@ public class UIController {
 		if (currentUser instanceof Employee) {
 			cmd.employeeMainMenu();
 		}
-		else if (currentUser instanceof Employer) {
-			cmd.employerMainMenu();
+		else if (currentUser instanceof Manager) {
+			cmd.managerMainMenu();
 		}
 	}
 	/**
@@ -91,8 +91,8 @@ public class UIController {
 	public String getCurrentUserSchedule () {
 		return ((Employee)(currentUser)).schedule();
 	}
-	public String getEmployerContactInfo() {
-		return database.getEmployer().contactInfo();
+	public String getManagerContactInfo() {
+		return database.getManager().contactInfo();
 	}
 	public String getEmployeeContactInfo () {
 		Employee[] e = database.getEmployees();
