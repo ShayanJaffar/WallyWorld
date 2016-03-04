@@ -31,91 +31,49 @@ public class Database {
 	/**
 	 * returns the user with the specified username
 	 * @param username of the desired user
-	 * @param password of the desired user
 	 * @return the user
 	 */
-	public User getUser(String username, String password) {
-		return userMap.get(username);
+	public User getUser(String username) {
+		return userMap.get(username).clone();
 	}
 	/**
-	 * returns the employer's contact info
-	 * @return String
+	 * returns the employee with the specified username
+	 * @param username of the desired user
+	 * @return the employee
 	 */
-	public String getEmployerContactInfo() {
-		return employers.getFirst().contactInfo();
-	}
-	/**
-	 * Returns an employees contact info
-	 * @param uN username
-	 * @return String
-	 */
-	public String getEmployeeContactInfo(String uN) {
-		User u = userMap.get(uN);
-		if(u instanceof Employee)
-			return u.contactInfo();
-		return "No employee has that username";
-	}
-	/**
-	 * Returns all employees contact info
-	 * @return String
-	 */
-	public String getEmployeeContactInfo () {
-		String string = "";
-		for(Employee e : employees)
-			string += e.contactInfo() + "\n\n";
-		return string;
-	}
-	/**
-	 * Returns all employees names and usernames (\tname: username\n)
-	 * @return String
-	 */
-	public String getEmployeeNamesUsernames () {
-		String string = "";
-		for(Employee e : employees)
-			string += "\t" + e.getName() + ": " + e.getUsername() + "\n";
-		return string;
-	}
-	/**
-	 * returns true if employee with username exists, false otherwise
-	 * @param username
-	 * @return
-	 */
-	public boolean doesEmployeeExist (String username) {
-		return (userMap.get(username) instanceof Employee);
-		//User u = userMap.get(username);
-		//return (u instanceof Employee);
-	}
-	/**
-	 * returns and integer array for the total number of people covering the current shift
-	 * @return
-	 */
-	public int[] mostRecentAsIntArray () {
-		int[] array = new int[19];
-		int[] eArray = null;
-		for(Employee e : employees) {
-			eArray = e.shiftAsIntArray();
-			for (int i = 0; i < 19; i++)
-				if (eArray != null)
-					array[i] += eArray[i];
-		}
-		return array;
-	}
-	/**
-	 * assigns/removes an employee to/from a shift
-	 * @param username
-	 * @param shift
-	 * @param value
-	 * @return 1 if successful, 0 if already assigned/not assigned, -1 if no user with that username
-	 */
-	public int assignShift (String username, int shift, boolean value) {
-		User u = userMap.get(username);
-		if (u instanceof Employee) {
-			if (((Employee) u).assignShift(shift, value))
-				return 1;
-			else
-				return 0;
-		}
+	public Employee getEmployee(String username) {
+		//important question: will this properly call the subtype clone not the user clone
+		User user = userMap.get(username).clone();
+		if (user instanceof Employee)
+			return (Employee)(user);
 		else
-			return -1;
+			return null;
+	}
+	/**
+	 * Returns all employees
+	 * @return list of employees
+	 */
+	public Employee[] getEmployees () {
+		Employee[] list = new Employee [employees.size()];
+		int i = 0;
+		for(Employee e : employees) {
+			list[i] = e.clone();
+			i++;
+		}
+		return list;
+	}
+	/**
+	 * returns the employer
+	 * @return the employer
+	 */
+	public Employer getEmployer() {
+		return employers.getFirst().clone();
+	}
+	public boolean updateUser (User u) {
+		User old = userMap.get(u.getUsername());
+		if (old != null)
+			return old.update(u);
+		else
+			return false;
 	}
 }

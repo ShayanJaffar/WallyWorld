@@ -5,13 +5,15 @@ public class Employee extends User{
 	@Expose
 	int scheduleID;
 	
-
-	public void setSchedule(Schedule sched) {
-		schedule = sched;
+	private Employee (Employee old) {
+		super(old);
+		schedule = old.schedule.clone();
+		scheduleID = old.scheduleID;
 	}
-	public Schedule getSchedule() {
-		return schedule;
-	}
+	
+	public Schedule getSchedule() {return schedule;}
+	public void setSchedule(Schedule sched) {schedule = sched;}
+	
 	public Object getScheduleID() {
 		return scheduleID;
 	}
@@ -22,4 +24,19 @@ public class Employee extends User{
 	public String schedule () {
 		return schedule.toString();
 	}
+	
+	public Employee clone () {
+		return new Employee(this);
+	}
+	public boolean update (User u) {
+		if (u instanceof Employee) {
+			//for now don't update the name, etc when updating (update only called from assignShift right now)
+			//((User)(this)).update(u);
+			schedule = ((Employee)(u)).schedule.clone();
+			//scheduleID should stay the same
+			return true;
+		}
+		else
+			return false;
+	};
 }

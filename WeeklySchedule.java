@@ -2,28 +2,31 @@
 
 import com.google.gson.annotations.Expose;
 public class WeeklySchedule {
+	public static final int NUMBER_OF_SHIFTS = 19;
+	
 	@Expose
 	//Boolean array of the 19 shifts in the week
 	//Displayed differently in CMDLine and GUI
-	boolean[] shift = new boolean[19];
+	boolean[] shift = new boolean[NUMBER_OF_SHIFTS];
 	@Expose
 	DateStamp dateStamp = new DateStamp();
 	//Stores the first date in the schedule
-	public DateStamp getDateStamp() {
-		return dateStamp;
-	}
-
-	public boolean[] getShift() {
-		return shift;
+	
+	private WeeklySchedule (WeeklySchedule old) {
+		for (int i = 0; i < NUMBER_OF_SHIFTS; i++)
+			shift[i] = old.shift[i];
+		dateStamp = old.dateStamp;
 	}
 	
-	public boolean isTrue (int i) {
-		return shift[i];
-	}
+	public DateStamp getDateStamp() {return dateStamp;}
+	
+	public boolean[] getShift() {return shift;}
+	
+	public boolean isAssigned (int i) {return shift[i];}
 	
 	public int[] listAsIntArray () {
-		int[] array = new int[19];
-		for (int i = 0; i < 19; i++) {
+		int[] array = new int[NUMBER_OF_SHIFTS];
+		for (int i = 0; i < NUMBER_OF_SHIFTS; i++) {
 			if (shift[i])
 				array[i] = 1;
 		}
@@ -49,5 +52,9 @@ public class WeeklySchedule {
 				"\nShift 1\t "+ boolToString(0) + "   " + boolToString(3)+ "   " + boolToString(6)+ "   " + boolToString(9)+ "   " + boolToString(12)+ "   " + boolToString(15)+ "   " + boolToString(17) +
 				"\nShift 2\t "+ boolToString(1) + "   " + boolToString(4)+ "   " + boolToString(7)+ "   " + boolToString(10)+ "   " + boolToString(13)+ "   " + boolToString(16)+ "   " + boolToString(18) +
 				"\nShift 3\t "+ boolToString(2) + "   " + boolToString(5)+ "   " + boolToString(8)+ "   " + boolToString(11)+ "   " + boolToString(14) + "\n";
+	}
+	
+	public WeeklySchedule clone () {
+		return new WeeklySchedule(this);
 	}
 }

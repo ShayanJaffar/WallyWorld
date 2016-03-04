@@ -11,39 +11,33 @@ public abstract class User {
 	@Expose
 	String username;
 	
-	String getName(){
-		return name;
+	protected User (User old) {
+		name = old.name;
+		email = old.email;
+		phone = old.phone;
+		username = old.username;
 	}
 	
-	void setName(String n){
-		name = n;
-	}
+	public String getName () {return name;}
+	public String getEmail () {return email;}
+	public String getPhone () {return phone;}
+	public String getUsername () {return username;}
 	
-	String getEmail(){
-		return email;
-	}
-	
-	void setEmail(String e){
-		email = e;
-	}
-	
-	String getPhone(){
-		return phone;
-	}
-	
-	void setPhone(String p){
-		phone = p;
-	}
-	
-	String getUsername(){
-		return username;
-	}
-	
-	void setUsername(String u){
-		username = u;
-	}
+	public void setName (String n) {name = n;}
+	public void setEmail (String e) {email = e;}
+	public void setPhone (String p) {phone = p;}
+	public void setUsername (String u) {username = u;}
 	
 	public String contactInfo () {
 		return "\tName: " + name + "\n\tEmail: " + email + "\n\tPhone: " + phone;
+	}
+	
+	public abstract User clone ();
+	public boolean update (User u) {
+		name = u.name;
+		email = u.email;
+		phone = u.phone;
+		//username should stay the same
+		return true;
 	}
 }

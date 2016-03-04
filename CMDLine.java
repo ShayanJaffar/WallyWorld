@@ -52,7 +52,7 @@ public class CMDLine {
     * Prints Employer's contact information
     */
 	private void printEmployerInfo() {
-		print("\nEmployer's contact information:\n" + uic.getEmployerContactInfo());
+		print("\nEmployer's contact information:\n" + uic.getEmployerContactInfo() + "\n");
 	}
 
 	/**
@@ -76,7 +76,7 @@ public class CMDLine {
                 	+ "  4) Remove Shift\n"
                 	+ "  5) Display Employee Contact Information\n"
                 	+ "  6) Logout\n ");
-        	int choice = getIntInput("\nOption: ");
+        	int choice = getIntInput("Option: ");
             switch(choice) {
             	case 1:
             		displayEmployeeUsernames();

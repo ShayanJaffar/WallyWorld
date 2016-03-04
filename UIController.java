@@ -38,7 +38,7 @@ public class UIController {
 	private void login() {
 		while (currentUser == null) {
 			if (mode == COMMAND_LINE_MODE) {
-				currentUser = database.getUser(cmd.getUsername(), "");
+				currentUser = database.getUser(cmd.getUsername());
 			}
 		}
 	}
@@ -75,7 +75,16 @@ public class UIController {
 	 * @return 1 if successful, 0 if already assigned/not assigned, -1 if no user with that username
 	 */
 	public int assignShift (String username, int shift, boolean value) {
-		return database.assignShift(username, shift, value);
+		Employee e = database.getEmployee(username);
+		if (e != null) {
+			//only need to update if shift is changed
+			if (e.assignShift(shift, value) && database.updateUser(e))
+				return 1;
+			else
+				return 0;
+		}
+		else
+			return -1;
 	}
 	
 	//Basic functions to navigate UI and access information held in the database
@@ -83,16 +92,31 @@ public class UIController {
 		return ((Employee)(currentUser)).schedule();
 	}
 	public String getEmployerContactInfo() {
-		return database.getEmployerContactInfo();
+		return database.getEmployer().contactInfo();
 	}
 	public String getEmployeeContactInfo () {
-		return database.getEmployeeContactInfo();
+		Employee[] e = database.getEmployees();
+		String string = "";
+		for (int i = 0; i < e.length; i++)
+			string += e[i].contactInfo() + "\n";
+		return string;
 	}
 	public String getEmployeeNamesUsernames () {
-		return database.getEmployeeNamesUsernames();
+		Employee[] e = database.getEmployees();
+		String string = "";
+		for (int i = 0; i < e.length; i++)
+			string += e[i].getName() + ": " + e[i].getUsername() + "\n";
+		return string;
 	}
 	public int[] mostRecentAsIntArray () {
-		return database.mostRecentAsIntArray();
+		Employee[] e = database.getEmployees();
+		int[] total = new int[WeeklySchedule.NUMBER_OF_SHIFTS];
+		for (int i = 0; i < e.length; i++) {
+			int[] shift = e[i].shiftAsIntArray();
+			for (int j = 0; j < total.length; j++)
+				total[j] += shift[j];
+		}
+		return total;
 	}
 	//End of basic functions
 }
