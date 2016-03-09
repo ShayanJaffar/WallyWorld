@@ -29,12 +29,18 @@ public class Database {
 			userMap.put(er.getUsername(),er);
 	}
 	/**
+	 * Add a new applicant to the database
+	 */
+	public void addNew (Applicant applicant) {
+		
+	}
+	/**
 	 * returns the user with the specified username
 	 * @param username of the desired user
 	 * @return the user
 	 */
 	public User getUser(String username) {
-		return userMap.get(username).clone();
+		return userMap.get(username);
 	}
 	/**
 	 * returns the employee with the specified username
@@ -43,7 +49,7 @@ public class Database {
 	 */
 	public Employee getEmployee(String username) {
 		//important question: will this properly call the subtype clone not the user clone
-		User user = userMap.get(username).clone();
+		User user = userMap.get(username);
 		if (user instanceof Employee)
 			return (Employee)(user);
 		else
@@ -57,7 +63,7 @@ public class Database {
 		Employee[] list = new Employee [employees.size()];
 		int i = 0;
 		for(Employee e : employees) {
-			list[i] = e.clone();
+			list[i] = e;
 			i++;
 		}
 		return list;
@@ -67,13 +73,6 @@ public class Database {
 	 * @return the manager
 	 */
 	public Manager getManager() {
-		return managers.getFirst().clone();
-	}
-	public boolean updateUser (User u) {
-		User old = userMap.get(u.getUsername());
-		if (old != null)
-			return old.update(u);
-		else
-			return false;
+		return managers.getFirst();
 	}
 }

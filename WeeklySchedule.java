@@ -12,12 +12,6 @@ public class WeeklySchedule {
 	DateStamp dateStamp = new DateStamp();
 	//Stores the first date in the schedule
 	
-	private WeeklySchedule (WeeklySchedule old) {
-		for (int i = 0; i < NUMBER_OF_SHIFTS; i++)
-			shift[i] = old.shift[i];
-		dateStamp = old.dateStamp;
-	}
-	
 	public DateStamp getDateStamp() {return dateStamp;}
 	
 	public boolean[] getShift() {return shift;}
@@ -52,9 +46,5 @@ public class WeeklySchedule {
 				"\nShift 1\t "+ boolToString(0) + "   " + boolToString(3)+ "   " + boolToString(6)+ "   " + boolToString(9)+ "   " + boolToString(12)+ "   " + boolToString(15)+ "   " + boolToString(17) +
 				"\nShift 2\t "+ boolToString(1) + "   " + boolToString(4)+ "   " + boolToString(7)+ "   " + boolToString(10)+ "   " + boolToString(13)+ "   " + boolToString(16)+ "   " + boolToString(18) +
 				"\nShift 3\t "+ boolToString(2) + "   " + boolToString(5)+ "   " + boolToString(8)+ "   " + boolToString(11)+ "   " + boolToString(14) + "\n";
-	}
-	
-	public WeeklySchedule clone () {
-		return new WeeklySchedule(this);
 	}
 }

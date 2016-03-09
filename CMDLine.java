@@ -31,21 +31,13 @@ public class CMDLine {
             		printManagerInfo();
             		break;
             	case 3:
-            		logout();
-            		break;
+            		uic.logout();
+            		return;
             	default:
             		print("Invalid input");
             		break;
             }
         }
-	}
-	
-	/**
-	 *  Logs out of the system.
-	 */
-    private void logout() {
-    	print("\nDatabase Saved\nExit Successful");
-		uic.logout();
 	}
     
    /**
@@ -75,7 +67,7 @@ public class CMDLine {
                 	+ "  3) Assign Shift\n"
                 	+ "  4) Remove Shift\n"
                 	+ "  5) Display Employee Contact Information\n"
-                	+ "  6) Logout\n ");
+                	+ "  6) Logout");
         	int choice = getIntInput("Option: ");
             switch(choice) {
             	case 1:
@@ -94,7 +86,7 @@ public class CMDLine {
             		displayEmployeeInformation();
             		break;
             	case 6:
-            		logout();
+            		uic.logout();
             		break;
             	default:
             		print("Invalid input");
@@ -120,7 +112,7 @@ public class CMDLine {
 	 * Displays Shift information
 	 */
 	private void printShiftConstants() {
-		print("\n(M): Morning Shift, (A): Afternoon Shift, (E): Evening Shift\n");
+		print("\n(M): Morning Shift, (A): Afternoon Shift, (E): Evening Shift");
 		String[] day = { "Mon(M)", "Mon(A)", "Mon(E)", "Tue(M)", "Tue(A)", "Tue(E)", 
 				"Wed(M)", "Wed(A)", "Wed(E)", "Thu(M)", "Thu(A)", "Thu(E)", "Fri(M)",
 				"Fri(A)", "Fri(E)", "Sat(A)", "Sat(E)", "Sun(A)", "Sun(E)" };
@@ -132,7 +124,7 @@ public class CMDLine {
 			if((i+1) % 4 == 0)
 				System.out.print("\n");
 		}
-		print("\n\n");
+		print("\n");
 		
 	}
 	
@@ -252,7 +244,13 @@ public class CMDLine {
 	/**
 	 * prints the welcome text
 	 */
-	public void showWelcome () {
-		print("Welcome to WallyWorld!");
+	public int welcomeOption () {
+		print("Welcome to WallyWorld!\n"
+				+ "What would you like to do?\n"
+				+ "  1) Login\n"
+				+ "  2) Create an account\n"
+				+ "  3) Switch input mode\n"
+				+ "  4) Quit");
+		return getIntInput("Option: ", 1, 4);
 	}
 }

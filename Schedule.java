@@ -7,13 +7,6 @@ public class Schedule {
 	public LinkedList<WeeklySchedule> shifts = new LinkedList<WeeklySchedule>();
 	@Expose
 	int scheduleID;
-	
-	private Schedule (Schedule old) {
-		for (WeeklySchedule ws : old.shifts) {
-			shifts.add(ws.clone());
-		}
-		scheduleID = old.scheduleID;
-	}
 
 	public int getScheduleID() {
 		return scheduleID;
@@ -28,8 +21,4 @@ public class Schedule {
 	}
 	
 	public String toString () {return shifts.getLast().toString();}
-	
-	public Schedule clone () {
-		return new Schedule(this);
-	}
 }

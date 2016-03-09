@@ -20,14 +20,32 @@ public class UIController {
 	 * Starts the interface
 	 */
 	public void run () {
-		showWelcome();
-		//allowModeSwitch();
-		login();
-		if (currentUser instanceof Employee) {
-			cmd.employeeMainMenu();
-		}
-		else if (currentUser instanceof Manager) {
-			cmd.managerMainMenu();
+		int choice;
+		
+		while (true) {
+			choice = welcomeOption();
+			
+			switch (choice) {
+			case 1:
+				login();
+				if (currentUser instanceof Employee) {
+					cmd.employeeMainMenu();
+				}
+				else if (currentUser instanceof Manager) {
+					cmd.managerMainMenu();
+				}
+				break;
+			case 2:
+				createNewAccount();
+				break;
+			case 3:
+				inputModeSwitch();
+				break;
+			case 4:
+				if (mode == COMMAND_LINE_MODE)
+					cmd.print("Exit Successful\n");
+				return;
+			}
 		}
 	}
 	/**
@@ -45,15 +63,17 @@ public class UIController {
 	/**
 	 * Shows the welcome text/window/etc
 	 */
-	private void showWelcome () {
+	private int welcomeOption () {
 		if (mode == COMMAND_LINE_MODE) {
-			cmd.showWelcome();
+			return cmd.welcomeOption();
 		}
+		else
+			return 4;
 	}
 	/**
 	 * Allows the user to switch to a different ui mode
 	 */
-	private void allowModeSwitch () {
+	private void inputModeSwitch () {
 		int temp = -1;
 		if (mode == COMMAND_LINE_MODE) {
 			temp = cmd.getModeSwitch();
@@ -65,7 +85,11 @@ public class UIController {
 	 * Logs out of the system
 	 */
 	public void logout() {
-		Controller.endAll(database);		
+		currentUser = null;
+		Controller.save(database);
+		if (mode == COMMAND_LINE_MODE)
+			cmd.print("Database Saved\n");
+		//Controller.endAll(database);		
 	}
 	/**
 	 * Assigns/removes a user to/from a shift
@@ -78,13 +102,21 @@ public class UIController {
 		Employee e = database.getEmployee(username);
 		if (e != null) {
 			//only need to update if shift is changed
-			if (e.assignShift(shift, value) && database.updateUser(e))
+			if (e.assignShift(shift, value))
 				return 1;
 			else
 				return 0;
 		}
 		else
 			return -1;
+	}
+	public void createNewAccount () {
+		String name = "";
+		String username = cmd.getUsername();
+		String password = cmd.getPassword();
+		String phone = "";
+		
+		
 	}
 	
 	//Basic functions to navigate UI and access information held in the database

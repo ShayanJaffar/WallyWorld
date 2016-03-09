@@ -1,5 +1,5 @@
-
 import com.google.gson.annotations.Expose;
+
 public abstract class User {
 	//All information pertaining to all users
 	@Expose
@@ -11,7 +11,8 @@ public abstract class User {
 	@Expose
 	String username;
 	
-	protected User (User old) {
+	public User () {};
+	public User (User old) {
 		name = old.name;
 		email = old.email;
 		phone = old.phone;
@@ -30,14 +31,5 @@ public abstract class User {
 	
 	public String contactInfo () {
 		return "\tName: " + name + "\n\tEmail: " + email + "\n\tPhone: " + phone;
-	}
-	
-	public abstract User clone ();
-	public boolean update (User u) {
-		name = u.name;
-		email = u.email;
-		phone = u.phone;
-		//username should stay the same
-		return true;
 	}
 }
