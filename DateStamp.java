@@ -19,10 +19,10 @@ public class DateStamp {
 	}
 	
 	public boolean equals (DateStamp other) {
-		if (month == other.month && day == other.day && year == other.year) {
+		if (month == other.month && day == other.day && year == other.year) 
 			return true;
-		}
-		else {return false;}
+		else 
+			return false;
 	}
 	
 	public String toString () {

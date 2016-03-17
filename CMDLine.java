@@ -95,7 +95,53 @@ public class CMDLine {
         }
         
 	}
-    
+	public void applicantMainMenu() {
+		while (true) {
+        	print("  1) View Application\n"
+                + "  2) Show Manager Contact Info\n"
+                + "  3) Update Basic Information\n"
+                + "  4) Update Avability\n"
+                + "  5) Update Resume\n"
+                + "  6) Delete Application\n"
+                + "  7) Logout ");
+        	int choice = getIntInput("Option: ");
+            switch(choice) {
+            	case 1:
+            		printApplicantInfo();
+            		break;
+            	case 2:
+            		printManagerInfo();
+            		break;
+            	case 3:
+            		uic.updatebasicinfo();
+            		break;
+            	case 4:
+            		uic.updateAvailability();
+            		break;
+            	case 5:
+            		printManagerInfo();
+            		break;
+            	case 6:
+            		uic.deleteApplicant(null);
+            		break;
+            	case 7:
+            		uic.logout();
+            		return;
+            	default:
+            		print("Invalid input");
+            		break;
+            }
+        }
+		
+	}
+	private void printApplicantInfo() {
+		Applicant app = uic.getApplicant();
+		print("\n" + app.AppcontactInfo());
+		print("\nAvailability\n"+ uic.getCurrentUserAvailability());
+		print("\nResume\n"+app.getResume().toString()+"\n");
+		
+	}
+
 	/**
 	 * For every employee, counts how many people are covering a certain shift
 	 * Displays shift coverage in a table
@@ -111,7 +157,7 @@ public class CMDLine {
 	/**
 	 * Displays Shift information
 	 */
-	private void printShiftConstants() {
+	public void printShiftConstants() {
 		print("\n(M): Morning Shift, (A): Afternoon Shift, (E): Evening Shift");
 		String[] day = { "Mon(M)", "Mon(A)", "Mon(E)", "Tue(M)", "Tue(A)", "Tue(E)", 
 				"Wed(M)", "Wed(A)", "Wed(E)", "Thu(M)", "Thu(A)", "Thu(E)", "Fri(M)",
@@ -186,14 +232,13 @@ public class CMDLine {
 	 * @param prompt text shown to user
 	 * @return number entered (-1 if not an integer or outside of range)
 	 */
-	private int getIntInput(String prompt, int min, int max) {
+	public int getIntInput(String prompt, int min, int max) {
 		int value = getIntInput(prompt);
 		if (value >= min && value <= max) {return value;}
 		else if (value != -1) {
 			print("input outside of range");
-			return -1;
 		}
-		else {return -1;}
+		return getIntInput(prompt, min, max);
 	}
 	
 	/**
@@ -201,7 +246,7 @@ public class CMDLine {
 	 * @param prompt text shown to user
 	 * @return string entered
 	 */
-	private String getStringInput(String prompt) {
+	public String getStringInput(String prompt) {
 		System.out.print(prompt);
 		String str = input.nextLine();
 		if(str.length() < 1)
@@ -215,21 +260,6 @@ public class CMDLine {
 	 */
 	public void print(String string) {
 		System.out.println(string);
-	}
-	
-	/**
-	 * gets a username
-	 * @return string username
-	 */
-	public String getUsername () {
-		return getStringInput("Enter username: ");
-	}
-	/**
-	 * gets a password
-	 * @return string password
-	 */
-	public String getPassword () {
-		return getStringInput("Enter password: ");
 	}
 	/**
 	 * allows the user to switch ui mode
@@ -253,4 +283,6 @@ public class CMDLine {
 				+ "  4) Quit");
 		return getIntInput("Option: ", 1, 4);
 	}
+
+	
 }

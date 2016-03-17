@@ -10,29 +10,24 @@ public class Database {
 	@Expose
 	LinkedList<Manager> managers = new LinkedList<>();
 	@Expose
-	LinkedList<Schedule> schedules = new LinkedList<>();
+	LinkedList<Applicant> applicants = new LinkedList<>();
 	
 	HashMap<String, User> userMap = new HashMap<String,User>();
-	HashMap<Integer, Schedule> scheduleMap = new HashMap<Integer, Schedule>();
+	HashMap<String, Applicant> applicantMap = new HashMap<>();
 	
 	/**
 	 * Links Database information to de-serialized objects
 	 */
 	public void initialize(){
-		for(Schedule s : schedules)
-			scheduleMap.put(s.getScheduleID(), s);
 		for(Employee e : employees){
-			e.setSchedule(scheduleMap.get(e.getScheduleID()));
 			userMap.put(e.getUsername(),e);
 		}
 		for(Manager er : managers)
 			userMap.put(er.getUsername(),er);
-	}
-	/**
-	 * Add a new applicant to the database
-	 */
-	public void addNew (Applicant applicant) {
-		
+		for(Applicant a : applicants)
+			if(!(a instanceof Employee))
+				applicantMap.put(a.getUsername(), a);
+				
 	}
 	/**
 	 * returns the user with the specified username
@@ -74,5 +69,22 @@ public class Database {
 	 */
 	public Manager getManager() {
 		return managers.getFirst();
+	}
+	public void addApp(Applicant applicant) {
+		applicants.add(applicant);
+		applicantMap.put(applicant.getUsername(), applicant);
+	}
+	public Applicant getApplicant(String inputUN) {
+		return applicantMap.get(inputUN);
+	}
+	public void removeApp(String username) {
+		applicantMap.remove(username);
+	}
+	public void updateAppAva(String username, int i, int x) {
+		Applicant a = getEmployee(username);
+		if(a == null)
+			a = getApplicant(username);
+		a.getAvailability().assignShift(i, x == 0 ? false : true);
+		
 	}
 }

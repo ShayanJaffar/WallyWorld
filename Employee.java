@@ -1,26 +1,32 @@
 import com.google.gson.annotations.Expose;
 
-public class Employee extends User{
-	private Schedule schedule;
+public class Employee extends Applicant {
 	@Expose
-	int scheduleID;
-	
-	public Employee () {}
-	public Employee (Applicant applicant) {
-		super (applicant);
+	private Schedule schedule;
+
+	public Employee() {
 	}
-	
-	public Schedule getSchedule() {return schedule;}
-	public void setSchedule(Schedule sched) {schedule = sched;}
-	
-	public Object getScheduleID() {
-		return scheduleID;
+
+	public Employee(Applicant applicant) {
+		super(applicant);
 	}
-	public int[] shiftAsIntArray () {return schedule.shiftAsIntArray();}
-	public boolean assignShift (int i, boolean value) {
+
+	public Schedule getSchedule() {
+		return schedule;
+	}
+
+	public void setSchedule(Schedule sched) {
+		schedule = sched;
+	}
+	public int[] shiftAsIntArray() {
+		return schedule.shiftAsIntArray();
+	}
+
+	public boolean assignShift(int i, boolean value) {
 		return schedule.assignShift(i, value);
 	}
-	public String schedule () {
+
+	public String scheduleString() {
 		return schedule.toString();
 	}
 }

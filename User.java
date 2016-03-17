@@ -3,13 +3,13 @@ import com.google.gson.annotations.Expose;
 public abstract class User {
 	//All information pertaining to all users
 	@Expose
-	String name;
+	private String name;
 	@Expose
-	String email;
+	private String email;
 	@Expose
-	String phone;
+	private String phone;
 	@Expose
-	String username;
+	private String username;
 	
 	public User () {};
 	public User (User old) {
@@ -18,7 +18,6 @@ public abstract class User {
 		phone = old.phone;
 		username = old.username;
 	}
-	
 	public String getName () {return name;}
 	public String getEmail () {return email;}
 	public String getPhone () {return phone;}
@@ -30,6 +29,9 @@ public abstract class User {
 	public void setUsername (String u) {username = u;}
 	
 	public String contactInfo () {
-		return "\tName: " + name + "\n\tEmail: " + email + "\n\tPhone: " + phone;
+		return "\tName: " +  name + "\n\tEmail: " + email + "\n\tPhone: " + phone;
+	}
+	public String AppcontactInfo () {
+		return "Username: " + username + "\tName: " + name + "\nEmail: " + email + "\tPhone: " + phone;
 	}
 }

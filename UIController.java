@@ -28,12 +28,12 @@ public class UIController {
 			switch (choice) {
 			case 1:
 				login();
-				if (currentUser instanceof Employee) {
+				if (currentUser instanceof Employee) 
 					cmd.employeeMainMenu();
-				}
-				else if (currentUser instanceof Manager) {
+				else if (currentUser instanceof Manager) 
 					cmd.managerMainMenu();
-				}
+				else 
+					cmd.applicantMainMenu();
 				break;
 			case 2:
 				createNewAccount();
@@ -48,6 +48,10 @@ public class UIController {
 			}
 		}
 	}
+	public Applicant getApplicant() {
+		
+		return (Applicant) currentUser;
+	}
 	/**
 	 * Sets the Current User for the system
 	 * @param uN entered username of user
@@ -56,7 +60,10 @@ public class UIController {
 	private void login() {
 		while (currentUser == null) {
 			if (mode == COMMAND_LINE_MODE) {
-				currentUser = database.getUser(cmd.getUsername());
+				String inputUN = cmd.getStringInput("Enter Username: ");
+				currentUser = database.getUser(inputUN);
+				if(currentUser == null)
+					currentUser = database.getApplicant(inputUN);
 			}
 		}
 	}
@@ -68,18 +75,18 @@ public class UIController {
 			return cmd.welcomeOption();
 		}
 		else
-			return 4;
+			return 4; //exit system
 	}
 	/**
 	 * Allows the user to switch to a different ui mode
 	 */
 	private void inputModeSwitch () {
 		int temp = -1;
-		if (mode == COMMAND_LINE_MODE) {
-			temp = cmd.getModeSwitch();
-		}
-		
-		if (temp != -1) {mode = temp;}
+		if (mode == COMMAND_LINE_MODE) 
+			temp = cmd.getModeSwitch();	
+		if (temp != -1) 
+			mode = temp;
+			
 	}
 	/**
 	 * Logs out of the system
@@ -111,17 +118,17 @@ public class UIController {
 			return -1;
 	}
 	public void createNewAccount () {
-		String name = "";
-		String username = cmd.getUsername();
-		String password = cmd.getPassword();
-		String phone = "";
-		
-		
+		String username = cmd.getStringInput("Enter Username: ");
+		String password = cmd.getStringInput("Enter Password: ");
+		database.addApp(new Applicant(username, password));
 	}
 	
 	//Basic functions to navigate UI and access information held in the database
 	public String getCurrentUserSchedule () {
-		return ((Employee)(currentUser)).schedule();
+		return ((Employee)(currentUser)).scheduleString();
+	}
+	public String getCurrentUserAvailability () {
+		return ((Applicant)(currentUser)).getAvailability().toAvaString();
 	}
 	public String getManagerContactInfo() {
 		return database.getManager().contactInfo();
@@ -150,5 +157,27 @@ public class UIController {
 		}
 		return total;
 	}
+	public void deleteApplicant(String username) {
+		if(username == null)
+			database.removeApp(currentUser.getUsername());
+		database.removeApp(username);
+	}
 	//End of basic functions
+	public void updatebasicinfo() {
+		currentUser.setName(cmd.getStringInput("Enter Name: "));
+		currentUser.setPhone("Enter Phone Number: ");
+		currentUser.setEmail("Enter Email: ");
+		
+	}
+	public void updateAvailability() {
+		cmd.printShiftConstants();
+		for(int i = 0; i < 19; i++){
+			int x = cmd.getIntInput("Can you work in shift " + i + "? (1 = yes, 0 = no)", 0, 1);
+			database.updateAppAva(currentUser.getUsername(), i, x);
+				
+		}
+		
+		
+		
+	}
 }
