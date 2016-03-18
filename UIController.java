@@ -48,10 +48,6 @@ public class UIController {
 			}
 		}
 	}
-	public Applicant getApplicant() {
-		
-		return (Applicant) currentUser;
-	}
 	/**
 	 * Sets the Current User for the system
 	 * @param uN entered username of user
@@ -117,18 +113,27 @@ public class UIController {
 		else
 			return -1;
 	}
+	public int assignAvailability (int shift, boolean value) {
+		//only need to update if shift is changed
+		if (((Applicant)(currentUser)).assignAvailability(shift, value))
+			return 1;
+		else
+			return 0;
+	}
 	public void createNewAccount () {
-		String username = cmd.getStringInput("Enter Username: ");
-		String password = cmd.getStringInput("Enter Password: ");
-		database.addApp(new Applicant(username, password));
+		Applicant app = null;
+		if (mode == COMMAND_LINE_MODE)
+			app = cmd.createNewAccount();
+		database.addApp(app);
+		Controller.save(database);
 	}
 	
 	//Basic functions to navigate UI and access information held in the database
+	public String getApplicantInfo () {
+		return ((Applicant)(currentUser)).contactInfo();
+	}
 	public String getCurrentUserSchedule () {
 		return ((Employee)(currentUser)).scheduleString();
-	}
-	public String getCurrentUserAvailability () {
-		return ((Applicant)(currentUser)).getAvailability().toAvaString();
 	}
 	public String getManagerContactInfo() {
 		return database.getManager().contactInfo();
@@ -163,21 +168,11 @@ public class UIController {
 		database.removeApp(username);
 	}
 	//End of basic functions
-	public void updatebasicinfo() {
-		currentUser.setName(cmd.getStringInput("Enter Name: "));
-		currentUser.setPhone("Enter Phone Number: ");
-		currentUser.setEmail("Enter Email: ");
-		
+	public void updateBasicInfo (String name, String phone, String email) {
+		currentUser.setName(name);
+		currentUser.setPhone(phone);
+		currentUser.setEmail(email);
 	}
 	public void updateAvailability() {
-		cmd.printShiftConstants();
-		for(int i = 0; i < 19; i++){
-			int x = cmd.getIntInput("Can you work in shift " + i + "? (1 = yes, 0 = no)", 0, 1);
-			database.updateAppAva(currentUser.getUsername(), i, x);
-				
-		}
-		
-		
-		
 	}
 }

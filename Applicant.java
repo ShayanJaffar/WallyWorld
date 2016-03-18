@@ -26,14 +26,16 @@ public class Applicant extends User {
 	public Applicant () {
 		
 	}
-
+	
+	//we need to make this consistent
 	public Applicant(String u, String p) {
 		setUsername(u);
 		//this.password = p;
 		availability = new WeeklySchedule();
 		resume = new Resume();
 	}
-
+	
+	//we need to make this consistent
 	public Applicant(Applicant old) {
 		setName(old.getEmail());
 		setEmail(old.getEmail());
@@ -42,5 +44,13 @@ public class Applicant extends User {
 		setUsername(old.getUsername());
 		this.availability = old.getAvailability();
 		//this.password = old.password;
+	}
+	
+	public String info () {
+		return contactInfo() + "\nAvailability\n" + availability.toAvaString() + "\nResume\n" + resume;
+	}
+	
+	public boolean assignAvailability (int i, boolean value) {
+		return availability.assignShift(i, value);
 	}
 }

@@ -80,11 +80,4 @@ public class Database {
 	public void removeApp(String username) {
 		applicantMap.remove(username);
 	}
-	public void updateAppAva(String username, int i, int x) {
-		Applicant a = getEmployee(username);
-		if(a == null)
-			a = getApplicant(username);
-		a.getAvailability().assignShift(i, x == 0 ? false : true);
-		
-	}
 }

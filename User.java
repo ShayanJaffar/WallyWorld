@@ -29,9 +29,6 @@ public abstract class User {
 	public void setUsername (String u) {username = u;}
 	
 	public String contactInfo () {
-		return "\tName: " +  name + "\n\tEmail: " + email + "\n\tPhone: " + phone;
-	}
-	public String AppcontactInfo () {
 		return "Username: " + username + "\tName: " + name + "\nEmail: " + email + "\tPhone: " + phone;
 	}
 }

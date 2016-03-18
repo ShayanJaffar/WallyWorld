@@ -13,6 +13,35 @@ public class CMDLine {
 	}
 	
 	/**
+	 * prints the welcome text
+	 */
+	public int welcomeOption () {
+		print("Welcome to WallyWorld!\n"
+				+ "What would you like to do?\n"
+				+ "  1) Login\n"
+				+ "  2) Create an account\n"
+				+ "  3) Switch input mode\n"
+				+ "  4) Quit");
+		return getIntInput("Option: ", 1, 4);
+	}
+	/**
+	 * allows the user to switch ui mode
+	 * @return new mode to switch to (-1 if do not switch)
+	 */
+	public int getModeSwitch () {
+		int value = getIntInput("\nWould you like to switch user interface mode?\n" + 
+				UIController.COMMAND_LINE_MODE + " = command line, " + 
+				UIController.GUI_MODE + " = gui\n", 0, 1);
+		return value;
+	}
+	public Applicant createNewAccount () {
+		String username = getStringInput("Enter Username: ");
+		String password = getStringInput("Enter Password: ");
+		print("Created New Applicant Account.");
+		return new Applicant(username, password);
+	}
+	
+	/**
 	 *  Accessed if employee enters the system
 	 *  Gets Employee input and accesses functions accordingly
 	 * 
@@ -39,28 +68,12 @@ public class CMDLine {
             }
         }
 	}
-    
-   /**
-    * Prints Manager's contact information
-    */
-	private void printManagerInfo() {
-		print("\nManager's contact information:\n" + uic.getManagerContactInfo() + "\n");
-	}
-
-	/**
-	 * Prints the current user's current schedule
-	 */
-	private void printSchedule() {
-		print(uic.getCurrentUserSchedule());
-	}
-
 	/**
 	 * Accessed if user is an manager
 	 * Gets Manager input and accesses functions accordingly
 	 * 
 	 */
 	public void managerMainMenu() {
-  
         while (true) {
         	print("  1) Display Employee Usernames\n"
         			+ "  2) Show Shifts Covered\n"
@@ -93,7 +106,6 @@ public class CMDLine {
             		break;
             }
         }
-        
 	}
 	public void applicantMainMenu() {
 		while (true) {
@@ -113,10 +125,10 @@ public class CMDLine {
             		printManagerInfo();
             		break;
             	case 3:
-            		uic.updatebasicinfo();
+            		updateBasicInfo();
             		break;
             	case 4:
-            		uic.updateAvailability();
+            		updateAvailability();
             		break;
             	case 5:
             		printManagerInfo();
@@ -132,16 +144,32 @@ public class CMDLine {
             		break;
             }
         }
-		
+	}
+    
+   /**
+    * Prints Manager's contact information
+    */
+	private void printManagerInfo() {
+		print("\nManager's contact information:\n" + uic.getManagerContactInfo() + "\n");
+	}
+	/**
+	 * Displays all employee contact information
+	 */
+	private void displayEmployeeInformation() {
+		print("Employee List:");
+		print(uic.getEmployeeContactInfo());
 	}
 	private void printApplicantInfo() {
-		Applicant app = uic.getApplicant();
-		print("\n" + app.AppcontactInfo());
-		print("\nAvailability\n"+ uic.getCurrentUserAvailability());
-		print("\nResume\n"+app.getResume().toString()+"\n");
-		
+		print("\n" + uic.getApplicantInfo() + "\n");
 	}
-
+	
+	/**
+	 * Displays all employee names and usernames
+	 */
+	private void displayEmployeeUsernames() {
+		print("Employee List:");
+		print(uic.getEmployeeNamesUsernames());
+	}
 	/**
 	 * For every employee, counts how many people are covering a certain shift
 	 * Displays shift coverage in a table
@@ -154,26 +182,6 @@ public class CMDLine {
 		"\nShift 3\t "+ s[2] + "   " + s[5]+ "   " + s[8]+ "   " + s[11]+ "   " + s[14] + "\n");
 		
 	}
-	/**
-	 * Displays Shift information
-	 */
-	public void printShiftConstants() {
-		print("\n(M): Morning Shift, (A): Afternoon Shift, (E): Evening Shift");
-		String[] day = { "Mon(M)", "Mon(A)", "Mon(E)", "Tue(M)", "Tue(A)", "Tue(E)", 
-				"Wed(M)", "Wed(A)", "Wed(E)", "Thu(M)", "Thu(A)", "Thu(E)", "Fri(M)",
-				"Fri(A)", "Fri(E)", "Sat(A)", "Sat(E)", "Sun(A)", "Sun(E)" };
-		for(int i = 0; i < 19; i++) {
-			if(i < 10)
-				System.out.print("Shift  " + i + ":" + day[i] + "|");
-			else
-				System.out.print("Shift " + i + ":" + day[i] + "|");
-			if((i+1) % 4 == 0)
-				System.out.print("\n");
-		}
-		print("\n");
-		
-	}
-	
 	/**
 	 * Assigns or removes a shift to/from an employee
 	 * @param assign true=assign; false=remove
@@ -195,21 +203,40 @@ public class CMDLine {
 		else if((success == 1) && !assign)
 			print("Employee removed from shift.");
 	}
+	/**
+	 * Displays Shift information
+	 */
+	public void printShiftConstants() {
+		print("\n(M): Morning Shift, (A): Afternoon Shift, (E): Evening Shift");
+		String[] day = { "Mon(M)", "Mon(A)", "Mon(E)", "Tue(M)", "Tue(A)", "Tue(E)", 
+				"Wed(M)", "Wed(A)", "Wed(E)", "Thu(M)", "Thu(A)", "Thu(E)", "Fri(M)",
+				"Fri(A)", "Fri(E)", "Sat(A)", "Sat(E)", "Sun(A)", "Sun(E)" };
+		for(int i = 0; i < 19; i++) {
+			if(i < 10)
+				System.out.print("Shift  " + i + ":" + day[i] + "|");
+			else
+				System.out.print("Shift " + i + ":" + day[i] + "|");
+			if((i+1) % 4 == 0)
+				System.out.print("\n");
+		}
+		print("\n");
+	}
 
 	/**
-	 * Displays all employee names and usernames
+	 * Prints the current user's current schedule
 	 */
-	private void displayEmployeeUsernames() {
-		print("Employee List:");
-		print(uic.getEmployeeNamesUsernames());
+	private void printSchedule() {
+		print(uic.getCurrentUserSchedule());
 	}
 	
-	/**
-	 * Displays all employee contact information
-	 */
-	private void displayEmployeeInformation() {
-		print("Employee List:");
-		print(uic.getEmployeeContactInfo());
+	public void updateAvailability() {
+		printShiftConstants();
+		for(int i = 0; i < 19; i++){
+			uic.assignAvailability(i, getIntInput("Can you work in shift " + i + "? (1 = yes, 0 = no)", 0, 1) == 1);
+		}
+	}
+	public void updateBasicInfo () {
+		uic.updateBasicInfo(getStringInput("Enter Name: "), getStringInput("Enter Phone Number: "), getStringInput("Enter Email: "));
 	}
 	
 	/**
@@ -240,7 +267,6 @@ public class CMDLine {
 		}
 		return getIntInput(prompt, min, max);
 	}
-	
 	/**
 	 * Used to get a string input from user
 	 * @param prompt text shown to user
@@ -261,28 +287,4 @@ public class CMDLine {
 	public void print(String string) {
 		System.out.println(string);
 	}
-	/**
-	 * allows the user to switch ui mode
-	 * @return new mode to switch to (-1 if do not switch)
-	 */
-	public int getModeSwitch () {
-		int value = getIntInput("\nWould you like to switch user interface mode?\n" + 
-				UIController.COMMAND_LINE_MODE + " = command line, " + 
-				UIController.GUI_MODE + " = gui\n", 0, 1);
-		return value;
-	}
-	/**
-	 * prints the welcome text
-	 */
-	public int welcomeOption () {
-		print("Welcome to WallyWorld!\n"
-				+ "What would you like to do?\n"
-				+ "  1) Login\n"
-				+ "  2) Create an account\n"
-				+ "  3) Switch input mode\n"
-				+ "  4) Quit");
-		return getIntInput("Option: ", 1, 4);
-	}
-
-	
 }
