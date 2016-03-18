@@ -10,23 +10,17 @@ public class Applicant extends User {
 	public Resume getResume() {
 		return resume;
 	}
-
 	public void setResume(Resume resume) {
 		this.resume = resume;
 	}
-
 	public WeeklySchedule getAvailability() {
 		return availability;
 	}
-
 	public void setAvailability(WeeklySchedule availability) {
 		this.availability = availability;
 	}
-
-	public Applicant () {
-		
-	}
 	
+	public Applicant () {}
 	//we need to make this consistent
 	public Applicant(String u, String p) {
 		setUsername(u);
@@ -34,7 +28,6 @@ public class Applicant extends User {
 		availability = new WeeklySchedule();
 		resume = new Resume();
 	}
-	
 	//we need to make this consistent
 	public Applicant(Applicant old) {
 		setName(old.getEmail());

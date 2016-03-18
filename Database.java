@@ -13,21 +13,18 @@ public class Database {
 	LinkedList<Applicant> applicants = new LinkedList<>();
 	
 	HashMap<String, User> userMap = new HashMap<String,User>();
-	HashMap<String, Applicant> applicantMap = new HashMap<>();
 	
 	/**
 	 * Links Database information to de-serialized objects
 	 */
 	public void initialize(){
-		for(Employee e : employees){
-			userMap.put(e.getUsername(),e);
-		}
+		for(Employee e : employees)
+			userMap.put(e.getUsername(), e);
 		for(Manager er : managers)
-			userMap.put(er.getUsername(),er);
+			userMap.put(er.getUsername(), er);
 		for(Applicant a : applicants)
 			if(!(a instanceof Employee))
-				applicantMap.put(a.getUsername(), a);
-				
+				userMap.put(a.getUsername(), a);
 	}
 	/**
 	 * returns the user with the specified username
@@ -43,7 +40,6 @@ public class Database {
 	 * @return the employee
 	 */
 	public Employee getEmployee(String username) {
-		//important question: will this properly call the subtype clone not the user clone
 		User user = userMap.get(username);
 		if (user instanceof Employee)
 			return (Employee)(user);
@@ -70,14 +66,34 @@ public class Database {
 	public Manager getManager() {
 		return managers.getFirst();
 	}
-	public void addApp(Applicant applicant) {
-		applicants.add(applicant);
-		applicantMap.put(applicant.getUsername(), applicant);
+	public Applicant getApplicant(String username) {
+		User user = userMap.get(username);
+		if (user instanceof Applicant)
+			return (Employee)(user);
+		else
+			return null;
 	}
-	public Applicant getApplicant(String inputUN) {
-		return applicantMap.get(inputUN);
+	
+	public void addUser(User user) {
+		if (user instanceof Employee)
+			employees.add((Employee)(user));
+		else if (user instanceof Applicant)
+			applicants.add((Applicant)(user));
+		else
+			return; //cannot add managers
+		userMap.put(user.getUsername(), user);
 	}
-	public void removeApp(String username) {
-		applicantMap.remove(username);
+	public boolean removeUser(String username) {
+		User user = getUser(username);
+		if (user == null)
+			return false;
+		else if (user instanceof Employee)
+			employees.remove((Employee)(user));
+		else if (user instanceof Applicant)
+			applicants.remove((Applicant)(user));
+		else
+			return false; //cannot remove managers
+		userMap.remove(username);
+		return true;
 	}
 }

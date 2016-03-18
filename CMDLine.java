@@ -1,3 +1,4 @@
+import java.util.LinkedList;
 import java.util.Scanner;
 
 public class CMDLine {
@@ -37,7 +38,7 @@ public class CMDLine {
 	public Applicant createNewAccount () {
 		String username = getStringInput("Enter Username: ");
 		String password = getStringInput("Enter Password: ");
-		print("Created New Applicant Account.");
+		print("Created New Applicant Account.\n");
 		return new Applicant(username, password);
 	}
 	
@@ -131,7 +132,7 @@ public class CMDLine {
             		updateAvailability();
             		break;
             	case 5:
-            		printManagerInfo();
+            		updateResume();
             		break;
             	case 6:
             		uic.deleteApplicant(null);
@@ -237,6 +238,36 @@ public class CMDLine {
 	}
 	public void updateBasicInfo () {
 		uic.updateBasicInfo(getStringInput("Enter Name: "), getStringInput("Enter Phone Number: "), getStringInput("Enter Email: "));
+	}
+	public void updateResume () {
+		LinkedList<String> prevWork = new LinkedList<>();
+		LinkedList<String> prevEdu = new LinkedList<>();
+		LinkedList<String> skills = new LinkedList<>();
+		
+		String input;
+		print("Please enter your previous workplaces\nType _done to finish");
+		while (true) { //get previous work
+			input = getStringInput("Previous workplace: ");
+			if (input.equals("_done"))
+				break;
+			prevWork.add(input);
+		}
+		print("Please enter your previous education\nType _done to finish");
+		while (true) { //get previous education
+			input = getStringInput("Previous education: ");
+			if (input.equals("_done"))
+				break;
+			prevEdu.add(input);
+		}
+		print("Please enter your skills\nType _done to finish");
+		while (true) { //get skills
+			input = getStringInput("skills: ");
+			if (input.equals("_done"))
+				break;
+			skills.add(input);
+		}
+		
+		uic.updateResume(new Resume (prevWork, prevEdu, skills));
 	}
 	
 	/**

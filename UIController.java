@@ -58,8 +58,8 @@ public class UIController {
 			if (mode == COMMAND_LINE_MODE) {
 				String inputUN = cmd.getStringInput("Enter Username: ");
 				currentUser = database.getUser(inputUN);
-				if(currentUser == null)
-					currentUser = database.getApplicant(inputUN);
+				if (currentUser == null)
+					cmd.print("Invalid username\n");
 			}
 		}
 	}
@@ -124,7 +124,7 @@ public class UIController {
 		Applicant app = null;
 		if (mode == COMMAND_LINE_MODE)
 			app = cmd.createNewAccount();
-		database.addApp(app);
+		database.addUser(app);
 		Controller.save(database);
 	}
 	
@@ -164,8 +164,8 @@ public class UIController {
 	}
 	public void deleteApplicant(String username) {
 		if(username == null)
-			database.removeApp(currentUser.getUsername());
-		database.removeApp(username);
+			database.removeUser(currentUser.getUsername());
+		database.removeUser(username);
 	}
 	//End of basic functions
 	public void updateBasicInfo (String name, String phone, String email) {
@@ -173,6 +173,7 @@ public class UIController {
 		currentUser.setPhone(phone);
 		currentUser.setEmail(email);
 	}
-	public void updateAvailability() {
+	public void updateResume (Resume resume) {
+		((Applicant)(currentUser)).setResume(resume);
 	}
 }
