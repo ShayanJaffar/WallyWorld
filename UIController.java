@@ -130,10 +130,13 @@ public class UIController {
 	
 	//Basic functions to navigate UI and access information held in the database
 	public String getApplicantInfo () {
-		return ((Applicant)(currentUser)).contactInfo();
+		return ((Applicant)(currentUser)).info();
 	}
 	public String getCurrentUserSchedule () {
 		return ((Employee)(currentUser)).scheduleString();
+	}
+	public WeeklySchedule getCurrentUserAvailability(){
+		return ((Employee)(currentUser)).getAvailability();
 	}
 	public String getManagerContactInfo() {
 		return database.getManager().contactInfo();
@@ -175,5 +178,9 @@ public class UIController {
 	}
 	public void updateResume (Resume resume) {
 		((Applicant)(currentUser)).setResume(resume);
+	}
+	public void getApplications() {
+		
+		
 	}
 }

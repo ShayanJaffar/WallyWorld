@@ -3,6 +3,8 @@ import com.google.gson.annotations.Expose;
 public class Employee extends Applicant {
 	@Expose
 	private Schedule schedule;
+	//@Expose
+	private int hourlyRate;
 
 	public Employee() {
 	}
@@ -28,5 +30,13 @@ public class Employee extends Applicant {
 
 	public String scheduleString() {
 		return schedule.toString();
+	}
+	
+	public int getHourlyRate(){
+		return hourlyRate;
+	}
+	
+	public void setHourlyRate(int rate){
+		hourlyRate = rate;
 	}
 }

@@ -53,4 +53,12 @@ public class WeeklySchedule {
 				"\nShift 2\t "+ boolToString(1) + "   " + boolToString(4)+ "   " + boolToString(7)+ "   " + boolToString(10)+ "   " + boolToString(13)+ "   " + boolToString(16)+ "   " + boolToString(18) +
 				"\nShift 3\t "+ boolToString(2) + "   " + boolToString(5)+ "   " + boolToString(8)+ "   " + boolToString(11)+ "   " + boolToString(14) + "\n";
 	}
+	
+	public int toInt(){
+		int x = 0;
+		for(int i =1; i < NUMBER_OF_SHIFTS; i++){
+			x++;
+		}
+		return x;
+	}
 }

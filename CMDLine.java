@@ -50,17 +50,25 @@ public class CMDLine {
 	public void employeeMainMenu() {
         while (true) {
         	print("  1) Show Schedule\n"
-                + "  2) Show Manager Contact Info\n"
-                + "  3) Logout ");
+        		+ "  2) View Availability\n"
+        		+ "  3) Change Availability\n"
+                + "  4) Show Manager Contact Info\n"
+                + "  5) Logout ");
         	int choice = getIntInput("Option: ");
             switch(choice) {
             	case 1:
             		printSchedule();
             		break;
             	case 2:
-            		printManagerInfo();
+            		System.out.println(uic.getCurrentUserAvailability().toAvaString());
             		break;
             	case 3:
+            		updateAvailability();
+            		break;
+            	case 4:
+            		printManagerInfo();
+            		break;
+            	case 5:
             		uic.logout();
             		return;
             	default:
@@ -81,7 +89,9 @@ public class CMDLine {
                 	+ "  3) Assign Shift\n"
                 	+ "  4) Remove Shift\n"
                 	+ "  5) Display Employee Contact Information\n"
-                	+ "  6) Logout");
+                	+ "  6) View Applicants"
+                	+ "  7) Send Paychecks"
+                	+ "  8) Logout");
         	int choice = getIntInput("Option: ");
             switch(choice) {
             	case 1:
@@ -100,14 +110,30 @@ public class CMDLine {
             		displayEmployeeInformation();
             		break;
             	case 6:
-            		uic.logout();
+            		viewApplicants();
             		break;
+            	case 7:
+            		generatePaychecks();
+            		break;
+            	case 8:
+            		uic.logout();
+            		return;
             	default:
             		print("Invalid input");
             		break;
             }
         }
 	}
+	private void generatePaychecks() {
+		
+		
+	}
+
+	private void viewApplicants() {
+		uic.getApplications();
+		
+	}
+
 	public void applicantMainMenu() {
 		while (true) {
         	print("  1) View Application\n"
