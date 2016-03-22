@@ -56,8 +56,9 @@ public class WeeklySchedule {
 	
 	public int toInt(){
 		int x = 0;
-		for(int i =1; i < NUMBER_OF_SHIFTS; i++){
-			x++;
+		for(int i =0; i < NUMBER_OF_SHIFTS; i++){
+			if(shift[i])
+				x++;
 		}
 		return x;
 	}

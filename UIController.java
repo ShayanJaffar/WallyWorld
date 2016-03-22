@@ -192,7 +192,7 @@ public class UIController {
 		String string = "";
 		for(int i=0;i < e.length;i++){
 			string += e[i].getName() + ": $"
-			+ e[i].getHourlyRate()*e[i].getSchedule().getNewestShift().toInt()
+			+ /*e[i].getHourlyRate()**/e[i].getSchedule().getNewestShift().toInt()
 			+ "\n";
 		}
 		return string;
