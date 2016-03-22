@@ -3,7 +3,7 @@ import com.google.gson.annotations.Expose;
 public class Employee extends Applicant {
 	@Expose
 	private Schedule schedule;
-	//@Expose
+	@Expose
 	private int hourlyRate;
 
 	public Employee() {
