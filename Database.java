@@ -74,6 +74,16 @@ public class Database {
 			return null;
 	}
 	
+	public Applicant[] getApplicants(){
+		Applicant[] list = new Applicant [applicants.size()];
+		int i = 0;
+		for(Applicant a : applicants){
+			list[i] = a;
+			i++;
+		}
+		return list;
+	}
+	
 	public void addUser(User user) {
 		if (user instanceof Employee)
 			employees.add((Employee)(user));

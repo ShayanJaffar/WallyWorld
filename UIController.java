@@ -155,6 +155,14 @@ public class UIController {
 			string += e[i].getName() + ": " + e[i].getUsername() + "\n";
 		return string;
 	}
+	public String getApplications() {
+		Applicant[] a = database.getApplicants();
+		String string = "";
+		for(int i = 0; i < a.length;i++)
+			string += a[i].info();
+		return string;
+		
+	}
 	public int[] mostRecentAsIntArray () {
 		Employee[] e = database.getEmployees();
 		int[] total = new int[WeeklySchedule.NUMBER_OF_SHIFTS];
@@ -179,8 +187,15 @@ public class UIController {
 	public void updateResume (Resume resume) {
 		((Applicant)(currentUser)).setResume(resume);
 	}
-	public void getApplications() {
-		
-		
+	public String genPaycheck() {
+		Employee[] e = database.getEmployees();
+		String string = "";
+		for(int i=0;i < e.length;i++){
+			string += e[i].getName() + ": $"
+			+ e[i].getHourlyRate()*e[i].getSchedule().getNewestShift().toInt()
+			+ "\n";
+		}
+		return string;
 	}
+
 }

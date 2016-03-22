@@ -89,9 +89,9 @@ public class CMDLine {
                 	+ "  3) Assign Shift\n"
                 	+ "  4) Remove Shift\n"
                 	+ "  5) Display Employee Contact Information\n"
-                	+ "  6) View Applicants"
-                	+ "  7) Send Paychecks"
-                	+ "  8) Logout");
+                	+ "  6) View Applicants\n"
+                	+ "  7) Send Paychecks\n"
+                	+ "  8) Logout\n");
         	int choice = getIntInput("Option: ");
             switch(choice) {
             	case 1:
@@ -125,12 +125,12 @@ public class CMDLine {
         }
 	}
 	private void generatePaychecks() {
-		
+		System.out.println(uic.genPaycheck());
 		
 	}
 
 	private void viewApplicants() {
-		uic.getApplications();
+		System.out.println(uic.getApplications());
 		
 	}
 
