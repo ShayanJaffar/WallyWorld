@@ -10,7 +10,11 @@ public class Resume {
 	@Expose
 	private LinkedList<String> skills;
 	
-	public Resume () {}
+	public Resume () {
+		prevWork = new LinkedList<>();
+		prevEdu = new LinkedList<>();
+		skills = new LinkedList<>();
+	}
 	public Resume (LinkedList<String> prevWork, LinkedList<String> prevEdu, LinkedList<String> skills) {
 		this.prevWork = prevWork;
 		this.prevEdu = prevEdu;

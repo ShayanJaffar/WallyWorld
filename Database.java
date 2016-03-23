@@ -106,4 +106,27 @@ public class Database {
 		userMap.remove(username);
 		return true;
 	}
+	public boolean hireApplicant(String username) {
+		if(userMap.get(username) == null)
+			return false;
+		if(!(userMap.get(username) instanceof Employee) && !(userMap.get(username) instanceof Manager)) {
+			Applicant curr = (Applicant)(userMap.get(username));
+			Employee e = new Employee(curr);
+			this.applicants.remove(curr);
+			this.employees.add(e);
+			userMap.remove(username);
+			userMap.put(e.getUsername(), e);
+			return true;
+		}
+		return false;
+	}
+	public boolean rejectApplicant(String username) {
+		if(userMap.get(username) == null)
+			return false;
+		if(!(userMap.get(username) instanceof Employee) && !(userMap.get(username) instanceof Manager)) {
+			removeUser(username);
+			return true;
+		}
+		return false;
+	}
 }

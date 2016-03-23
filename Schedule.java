@@ -5,7 +5,10 @@ public class Schedule {
 	//Linked List to store all the weekly schedules of a single employee
 	@Expose
 	public LinkedList<WeeklySchedule> shifts = new LinkedList<WeeklySchedule>();
-
+	
+	public Schedule() {
+		shifts.add(new WeeklySchedule());
+	}
 	public WeeklySchedule getNewestShift() {
 		return shifts.getLast();
 	}

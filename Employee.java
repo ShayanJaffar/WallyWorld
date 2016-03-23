@@ -11,6 +11,8 @@ public class Employee extends Applicant {
 
 	public Employee(Applicant applicant) {
 		super(applicant);
+		setHourlyRate(7);
+		schedule = new Schedule();
 	}
 
 	public Schedule getSchedule() {
