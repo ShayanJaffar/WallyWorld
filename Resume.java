@@ -25,12 +25,12 @@ public class Resume {
 				s+=(pW+"\n");
 		}
 		if(prevEdu != null) {
-			s+= "Previous Education: \n";
+			s+= "\nPrevious Education: \n";
 			for(String pE : prevEdu)
 				s+=(pE+"\n");
 		}
 		if(skills != null) {
-			s+= "Skills: \n";
+			s+= "\nSkills: \n";
 			for(String sk : skills)
 				s+=(sk+"\n");
 		}

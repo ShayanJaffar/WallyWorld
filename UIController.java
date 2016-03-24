@@ -24,7 +24,6 @@ public class UIController {
 		
 		while (true) {
 			choice = welcomeOption();
-			
 			switch (choice) {
 			case 1:
 				login();

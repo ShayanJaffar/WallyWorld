@@ -17,7 +17,8 @@ public class CMDLine {
 	 * prints the welcome text
 	 */
 	public int welcomeOption () {
-		print("Welcome to WallyWorld!\n"
+		print("\n*****************************************\n"
+				+ "Welcome to WallyWorld!\n"
 				+ "What would you like to do?\n"
 				+ "  1) Login\n"
 				+ "  2) Create an account\n"
@@ -49,7 +50,8 @@ public class CMDLine {
 	 */
 	public void employeeMainMenu() {
         while (true) {
-        	print("  1) Show Schedule\n"
+        	print("\n*****************************************\n"
+        		+ "  1) Show Schedule\n"
         		+ "  2) View Availability\n"
         		+ "  3) Change Availability\n"
                 + "  4) Show Manager Contact Info\n"
@@ -84,7 +86,8 @@ public class CMDLine {
 	 */
 	public void managerMainMenu() {
         while (true) {
-        	print("  1) Display Employee Usernames\n"
+        	print("\n*****************************************\n"
+        			+ "  1) Display Employee Usernames\n"
         			+ "  2) Show Shifts Covered\n"
                 	+ "  3) Assign Shift\n"
                 	+ "  4) Remove Shift\n"
@@ -136,7 +139,8 @@ public class CMDLine {
 
 	public void applicantMainMenu() {
 		while (true) {
-        	print("  1) View Application\n"
+        	print("\n*****************************************\n"
+        		+ "  1) View Application\n"
                 + "  2) Show Manager Contact Info\n"
                 + "  3) Update Basic Information\n"
                 + "  4) Update Avability\n"
