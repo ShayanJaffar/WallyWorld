@@ -196,5 +196,15 @@ public class UIController {
 		}
 		return string;
 	}
+	public boolean hireApplicant(String username) {
+		if(database.hireApplicant(username))
+			return true;
+		return false;
+	}
+	public boolean rejectApplicant(String username) {
+		if(database.rejectApplicant(username))
+			return true;
+		return false;
+	}
 
 }

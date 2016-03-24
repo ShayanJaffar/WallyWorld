@@ -33,7 +33,12 @@
           }
         ]
       },
-      "resume": {},
+      "hourlyRate": 10,
+      "resume": {
+        "prevWork": [],
+        "prevEdu": [],
+        "skills": []
+      },
       "availability": {
         "shift": [
           true,
@@ -65,28 +70,57 @@
       "email": "11111@gmail.com",
       "phone": "512-555-5555",
       "username": "john"
-    }
-  ],
-  "managers": [
+    },
     {
-      "name": "Speckin McGlory",
-      "email": "speckin@gmail.com",
-      "phone": "512-555-5555",
-      "username": "god"
-    }
-  ],
-  "applicants": [
-    {
-      "resume": {},
+      "schedule": {
+        "shifts": [
+          {
+            "shift": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "dateStamp": {
+              "month": "FEB",
+              "day": 21,
+              "year": 2016
+            }
+          }
+        ]
+      },
+      "hourlyRate": 7,
+      "resume": {
+        "prevWork": [],
+        "prevEdu": [],
+        "skills": []
+      },
       "availability": {
         "shift": [
+          true,
           false,
+          true,
           false,
-          false,
-          false,
-          false,
-          false,
-          false,
+          true,
+          true,
+          true,
+          true,
+          true,
           false,
           false,
           false,
@@ -96,8 +130,6 @@
           false,
           false,
           true,
-          false,
-          false,
           true
         ],
         "dateStamp": {
@@ -105,10 +137,49 @@
           "year": 0
         }
       },
-      "username": "bob"
+      "name": "nah",
+      "email": "nah",
+      "phone": "nah",
+      "username": "jesus"
     },
     {
-      "resume": {},
+      "schedule": {
+        "shifts": [
+          {
+            "shift": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "dateStamp": {
+              "day": 0,
+              "year": 0
+            }
+          }
+        ]
+      },
+      "hourlyRate": 7,
+      "resume": {
+        "prevWork": [],
+        "prevEdu": [],
+        "skills": []
+      },
       "availability": {
         "shift": [
           false,
@@ -136,7 +207,55 @@
           "year": 0
         }
       },
-      "username": "cot"
+      "name": "asdasd@gmailhemail.com",
+      "email": "asdasd@gmailhemail.com",
+      "phone": "12371827312",
+      "username": "spof"
+    }
+  ],
+  "managers": [
+    {
+      "name": "Speckin McGlory",
+      "email": "speckin@gmail.com",
+      "phone": "512-555-5555",
+      "username": "god"
+    }
+  ],
+  "applicants": [
+    {
+      "resume": {
+        "prevWork": [],
+        "prevEdu": [],
+        "skills": []
+      },
+      "availability": {
+        "shift": [
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false,
+          false
+        ],
+        "dateStamp": {
+          "day": 0,
+          "year": 0
+        }
+      },
+      "username": "dude"
     }
   ]
 }

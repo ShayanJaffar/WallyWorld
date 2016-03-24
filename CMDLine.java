@@ -93,8 +93,9 @@ public class CMDLine {
                 	+ "  4) Remove Shift\n"
                 	+ "  5) Display Employee Contact Information\n"
                 	+ "  6) View Applicants\n"
-                	+ "  7) Send Paychecks\n"
-                	+ "  8) Logout\n");
+                	+ "  7) Hire/Reject Applicants\n"
+                	+ "  8) Send Paychecks\n"
+                	+ "  9) Logout\n");
         	int choice = getIntInput("Option: ");
             switch(choice) {
             	case 1:
@@ -116,9 +117,12 @@ public class CMDLine {
             		viewApplicants();
             		break;
             	case 7:
-            		generatePaychecks();
+            		hireOrRejectApp();
             		break;
             	case 8:
+            		generatePaychecks();
+            		break;
+            	case 9:
             		uic.logout();
             		return;
             	default:
@@ -127,6 +131,31 @@ public class CMDLine {
             }
         }
 	}
+	private void hireOrRejectApp() {
+		viewApplicants();
+		System.out.println("Hire:0, Reject:1, Back:2");
+		int choice = this.getIntInput("Option: ", 0, 2);
+		switch(choice) {
+			case 0:
+				if(uic.hireApplicant(this.getStringInput("Applicant's Username: ")))
+					System.out.println("Applicant was hired!");
+				else
+					System.out.println("Username not found.");
+				break;
+			case 1:
+				if(uic.rejectApplicant(this.getStringInput("Applicant's Username: ")))
+					System.out.println("Applicant was rejected.");
+				else
+					System.out.println("Username not found.");
+				break;
+			default: //case 2
+				return;
+			
+		}
+		
+	}
+
+
 	private void generatePaychecks() {
 		System.out.println(uic.genPaycheck());
 		
