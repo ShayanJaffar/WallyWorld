@@ -114,7 +114,9 @@ public class UIController {
 	}
 	public int assignAvailability (int shift, boolean value) {
 		//only need to update if shift is changed
-		if (((Applicant)(currentUser)).assignAvailability(shift, value))
+		if (currentUser instanceof Applicant && ((Applicant)(currentUser)).assignAvailability(shift, value))
+			return 1;
+		else if (currentUser instanceof Employee && ((Employee)(currentUser)).assignAvailability(shift, value))
 			return 1;
 		else
 			return 0;
@@ -135,7 +137,7 @@ public class UIController {
 		return ((Employee)(currentUser)).scheduleString();
 	}
 	public WeeklySchedule getCurrentUserAvailability(){
-		return ((Employee)(currentUser)).getAvailability();
+		return ((Employee)(currentUser)).getAvailability().getNewestShift();
 	}
 	public String getManagerContactInfo() {
 		return database.getManager().contactInfo();

@@ -23,8 +23,7 @@ public class Database {
 		for(Manager er : managers)
 			userMap.put(er.getUsername(), er);
 		for(Applicant a : applicants)
-			if(!(a instanceof Employee))
-				userMap.put(a.getUsername(), a);
+			userMap.put(a.getUsername(), a);
 	}
 	/**
 	 * returns the user with the specified username
@@ -69,7 +68,7 @@ public class Database {
 	public Applicant getApplicant(String username) {
 		User user = userMap.get(username);
 		if (user instanceof Applicant)
-			return (Employee)(user);
+			return (Applicant)(user);
 		else
 			return null;
 	}
@@ -107,15 +106,16 @@ public class Database {
 		return true;
 	}
 	public boolean hireApplicant(String username) {
-		if(userMap.get(username) == null)
+		User user = userMap.get(username);
+		if(user == null)
 			return false;
-		if(!(userMap.get(username) instanceof Employee) && !(userMap.get(username) instanceof Manager)) {
-			Applicant curr = (Applicant)(userMap.get(username));
-			Employee e = new Employee(curr);
-			this.applicants.remove(curr);
-			this.employees.add(e);
+		if(user instanceof Applicant) {
+			Applicant asApplicant = (Applicant)(userMap.get(username));
+			Employee asEmployee = new Employee(asApplicant, Employee.DEFAULT_HOURLY_RATE);
+			this.applicants.remove(asApplicant);
+			this.employees.add(asEmployee);
 			userMap.remove(username);
-			userMap.put(e.getUsername(), e);
+			userMap.put(username, asEmployee);
 			return true;
 		}
 		return false;

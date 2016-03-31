@@ -12,10 +12,7 @@ public class Controller {
     private static final String DEFUALT_FILE_PATH = "./data/data.json";
     private static String filePath;
     private Database database;
-    
-    
     private UIController ui;
-    
 	
     public static void main(String[] args) {
         Controller instance = new Controller();
