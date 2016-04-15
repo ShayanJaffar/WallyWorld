@@ -137,7 +137,7 @@ public class UIController {
 		return ((Employee)(currentUser)).scheduleString();
 	}
 	public WeeklySchedule getCurrentUserAvailability(){
-		return ((Employee)(currentUser)).getAvailability().getNewestShift();
+		return ((Employee)(currentUser)).getAvailability().getShift();
 	}
 	public String getManagerContactInfo() {
 		return database.getManager().contactInfo();
@@ -193,7 +193,7 @@ public class UIController {
 		String string = "";
 		for(int i=0;i < e.length;i++){
 			string += e[i].getName() + ": $"
-			+ e[i].getHourlyRate()*e[i].getSchedule().getNewestShift().toInt()
+			+ e[i].getHourlyRate()*e[i].getSchedule().getShift().toInt()
 			+ "\n";
 		}
 		return string;
