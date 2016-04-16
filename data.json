@@ -1,261 +1,59 @@
-{
-  "employees": [
-    {
-      "schedule": {
-        "shifts": [
-          {
-            "shift": [
-              true,
-              false,
-              false,
-              false,
-              false,
-              false,
-              false,
-              false,
-              false,
-              false,
-              false,
-              false,
-              false,
-              false,
-              false,
-              false,
-              true,
-              true,
-              false
-            ],
-            "dateStamp": {
-              "month": "FEB",
-              "day": 21,
-              "year": 2016
-            }
-          }
-        ]
-      },
-      "hourlyRate": 10,
-      "resume": {
-        "prevWork": [],
-        "prevEdu": [],
-        "skills": []
-      },
-      "availability": {
-        "shift": [
-          true,
-          true,
-          true,
-          true,
-          true,
-          true,
-          true,
-          true,
-          false,
-          false,
-          false,
-          false,
-          false,
-          false,
-          false,
-          false,
-          false,
-          false,
-          false
-        ],
-        "dateStamp": {
-          "day": 0,
-          "year": 0
-        }
-      },
-      "name": "John Smith",
-      "email": "11111@gmail.com",
-      "phone": "512-555-5555",
-      "username": "john"
-    },
-    {
-      "schedule": {
-        "shifts": [
-          {
-            "shift": [
-              false,
-              false,
-              false,
-              false,
-              false,
-              false,
-              false,
-              false,
-              false,
-              false,
-              false,
-              false,
-              false,
-              false,
-              false,
-              false,
-              false,
-              false,
-              false
-            ],
-            "dateStamp": {
-              "month": "FEB",
-              "day": 21,
-              "year": 2016
-            }
-          }
-        ]
-      },
-      "hourlyRate": 7,
-      "resume": {
-        "prevWork": [],
-        "prevEdu": [],
-        "skills": []
-      },
-      "availability": {
-        "shift": [
-          true,
-          false,
-          true,
-          false,
-          true,
-          true,
-          true,
-          true,
-          true,
-          false,
-          false,
-          false,
-          false,
-          false,
-          false,
-          false,
-          false,
-          true,
-          true
-        ],
-        "dateStamp": {
-          "day": 0,
-          "year": 0
-        }
-      },
-      "name": "nah",
-      "email": "nah",
-      "phone": "nah",
-      "username": "jesus"
-    },
-    {
-      "schedule": {
-        "shifts": [
-          {
-            "shift": [
-              false,
-              false,
-              false,
-              false,
-              false,
-              false,
-              false,
-              false,
-              false,
-              false,
-              false,
-              false,
-              false,
-              false,
-              false,
-              false,
-              false,
-              false,
-              false
-            ],
-            "dateStamp": {
-              "day": 0,
-              "year": 0
-            }
-          }
-        ]
-      },
-      "hourlyRate": 7,
-      "resume": {
-        "prevWork": [],
-        "prevEdu": [],
-        "skills": []
-      },
-      "availability": {
-        "shift": [
-          false,
-          false,
-          false,
-          false,
-          false,
-          false,
-          false,
-          false,
-          false,
-          false,
-          false,
-          false,
-          false,
-          false,
-          false,
-          false,
-          false,
-          false,
-          false
-        ],
-        "dateStamp": {
-          "day": 0,
-          "year": 0
-        }
-      },
-      "name": "asdasd@gmailhemail.com",
-      "email": "asdasd@gmailhemail.com",
-      "phone": "12371827312",
-      "username": "spof"
-    }
-  ],
-  "managers": [
-    {
-      "name": "Speckin McGlory",
-      "email": "speckin@gmail.com",
-      "phone": "512-555-5555",
-      "username": "god"
-    }
-  ],
-  "applicants": [
-    {
-      "resume": {
-        "prevWork": [],
-        "prevEdu": [],
-        "skills": []
-      },
-      "availability": {
-        "shift": [
-          false,
-          false,
-          false,
-          false,
-          false,
-          false,
-          false,
-          false,
-          false,
-          false,
-          false,
-          false,
-          false,
-          false,
-          false,
-          false,
-          false,
-          false,
-          false
-        ],
-        "dateStamp": {
-          "day": 0,
-          "year": 0
-        }
-      },
-      "username": "dude"
-    }
-  ]
-}
+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
