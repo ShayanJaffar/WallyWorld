@@ -21,13 +21,23 @@ public class WeeklySchedule {
 	}
 	public WeeklySchedule (Date date) {
 		shift = new boolean[NUMBER_OF_SHIFTS];
-		//set to first day of week at 0:00:00
-		calendar.setTime(date);
-		calendar.set(Calendar.DAY_OF_WEEK, calendar.getActualMinimum(Calendar.DAY_OF_WEEK));
-		calendar.set(Calendar.HOUR_OF_DAY, calendar.getActualMinimum(Calendar.HOUR_OF_DAY));
-		calendar.set(Calendar.MINUTE, calendar.getActualMinimum(Calendar.MINUTE));
-		calendar.set(Calendar.SECOND, calendar.getActualMinimum(Calendar.SECOND));
-		this.date.setTime(calendar.getTimeInMillis());
+		this.date = getSunday(date);
+	}
+	public WeeklySchedule (WeeklySchedule old) {
+		shift = new boolean[NUMBER_OF_SHIFTS];
+		for (int i = 0; i < NUMBER_OF_SHIFTS; i++) {
+			shift[i] = old.shift[i];
+		}
+		date = (Date)(old.date.clone());
+	}
+	public WeeklySchedule (WeeklySchedule old, Date date) {
+		shift = new boolean[NUMBER_OF_SHIFTS];
+		if (old != null) {
+			for (int i = 0; i < NUMBER_OF_SHIFTS; i++) {
+				shift[i] = old.shift[i];
+			}
+		}
+		this.date = getSunday(date);
 	}
 	
 	public Date getDate() {return date;}
@@ -81,5 +91,15 @@ public class WeeklySchedule {
 				x++;
 		}
 		return x;
+	}
+	
+	public Date getSunday (Date date) {
+		//return first day of week at 0:00:00
+		calendar.setTime(date);
+		calendar.set(Calendar.DAY_OF_WEEK, calendar.getActualMinimum(Calendar.DAY_OF_WEEK));
+		calendar.set(Calendar.HOUR_OF_DAY, calendar.getActualMinimum(Calendar.HOUR_OF_DAY));
+		calendar.set(Calendar.MINUTE, calendar.getActualMinimum(Calendar.MINUTE));
+		calendar.set(Calendar.SECOND, calendar.getActualMinimum(Calendar.SECOND));
+		return new Date(calendar.getTimeInMillis());
 	}
 }
