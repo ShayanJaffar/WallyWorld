@@ -1,3 +1,7 @@
+
+import gui.ScheduleWindow;
+import gui.welcomeMenu;
+
 public class UIController {
 	public static final int COMMAND_LINE_MODE = 0;
 	public static final int GUI_MODE = 1;
@@ -5,6 +9,7 @@ public class UIController {
 	private Database database;
 	private User currentUser = null;
 	private CMDLine cmd;
+        private welcomeMenu wcm;
 	
 	private int mode = COMMAND_LINE_MODE;
 	
@@ -52,25 +57,40 @@ public class UIController {
 	 * @param uN entered username of user
 	 * @param pW entered password of user
 	 */
+        
+        //MUQTADAA CHANGED STUFF HERE 4/17/16
 	private void login() {
 		while (currentUser == null) {
 			if (mode == COMMAND_LINE_MODE) {
 				String inputUN = cmd.getStringInput("Enter Username: ");
 				currentUser = database.getUser(inputUN);
 				if (currentUser == null)
-					cmd.print("Invalid username\n");
+					cmd.print("Invalid Username\n");
 			}
-		}
+                        else{
+                                String inputUN = wcm.getUN();
+                                if(database.getUser(inputUN) != null){
+                                        currentUser = database.getUser(inputUN);
+                                }
+                                else
+                                        cmd.print("Invalid Username\n");
+                        }
+                }
+		
 	}
 	/**
 	 * Shows the welcome text/window/etc
 	 */
+        
+        //MUQTADAA CHANGED STUFF HERE 4/17/16
 	private int welcomeOption () {
 		if (mode == COMMAND_LINE_MODE) {
 			return cmd.welcomeOption();
 		}
-		else
-			return 4; //exit system
+                else{
+			wcm = new welcomeMenu();
+                        return 1;
+                }//exit system
 	}
 	/**
 	 * Allows the user to switch to a different ui mode
@@ -134,7 +154,14 @@ public class UIController {
 		return ((Applicant)(currentUser)).info();
 	}
 	public String getCurrentUserSchedule () {
-		return ((Employee)(currentUser)).scheduleString();
+            if(mode == COMMAND_LINE_MODE){
+                return ((Employee)(currentUser)).scheduleString();
+            }
+            else{
+                ScheduleWindow sw = new ScheduleWindow();
+                sw.createAndShowGui();
+                return ((Employee)(currentUser)).scheduleString();
+            }
 	}
 	public WeeklySchedule getCurrentUserAvailability(){
 		return ((Employee)(currentUser)).getAvailability().getShift();
