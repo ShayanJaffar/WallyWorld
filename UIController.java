@@ -1,4 +1,3 @@
-
 import gui.ScheduleWindow;
 import gui.welcomeMenu;
 
@@ -9,7 +8,8 @@ public class UIController {
 	private Database database;
 	private User currentUser = null;
 	private CMDLine cmd;
-        private welcomeMenu wcm;
+	private JOPGUI gui;
+    private welcomeMenu wcm;
 	
 	private int mode = COMMAND_LINE_MODE;
 	
@@ -20,6 +20,7 @@ public class UIController {
 	public UIController(Database d) {
 		database = d;
 		cmd = new CMDLine(this);
+		gui = new JOPGUI(this);
 	}
 	/**
 	 * Starts the interface
@@ -61,21 +62,27 @@ public class UIController {
         //MUQTADAA CHANGED STUFF HERE 4/17/16
 	private void login() {
 		while (currentUser == null) {
+			String inputUN = "";
+			String inputPW = "";
 			if (mode == COMMAND_LINE_MODE) {
-				String inputUN = cmd.getStringInput("Enter Username: ");
-				currentUser = database.getUser(inputUN);
-				if (currentUser == null)
-					cmd.print("Invalid Username\n");
+				inputUN = cmd.getStringInput("Enter Username: ");
+				inputPW = cmd.getStringInput("Enter Password: ");
 			}
-                        else{
-                                String inputUN = wcm.getUN();
-                                if(database.getUser(inputUN) != null){
-                                        currentUser = database.getUser(inputUN);
-                                }
-                                else
-                                        cmd.print("Invalid Username\n");
-                        }
-                }
+			else if (mode == GUI_MODE)
+				inputUN = gui.getStringInput("Enter Username: ", false);
+				inputPW = gui.getStringInput("Enter Password: ", false);
+			
+			User user = database.getUser(inputUN);
+			if (user.passwordIs(inputPW))
+				currentUser = user;
+			
+			if (currentUser == null) {
+				if (mode == COMMAND_LINE_MODE)
+					cmd.print("Invalid Username/Password\n");
+				else if (mode == GUI_MODE)
+					gui.showMessage("Invalid Username/Password\n");
+			}
+		}
 		
 	}
 	/**
@@ -87,10 +94,13 @@ public class UIController {
 		if (mode == COMMAND_LINE_MODE) {
 			return cmd.welcomeOption();
 		}
-                else{
+		else if (mode == GUI_MODE) {
+			return gui.welcomeOption();
+		}
+		else {
 			wcm = new welcomeMenu();
-                        return 1;
-                }//exit system
+			return 1;
+		}
 	}
 	/**
 	 * Allows the user to switch to a different ui mode
@@ -99,9 +109,10 @@ public class UIController {
 		int temp = -1;
 		if (mode == COMMAND_LINE_MODE) 
 			temp = cmd.getModeSwitch();	
+		if (mode == GUI_MODE) 
+			temp = gui.getModeSwitch();	
 		if (temp != -1) 
 			mode = temp;
-			
 	}
 	/**
 	 * Logs out of the system
@@ -111,8 +122,17 @@ public class UIController {
 		Controller.save(database);
 		if (mode == COMMAND_LINE_MODE)
 			cmd.print("Database Saved\n");
-		//Controller.endAll(database);		
+		else if (mode == GUI_MODE)
+			gui.showMessage("Database Saved\n");
 	}
+	public void createNewAccount () {
+		Applicant app = null;
+		if (mode == COMMAND_LINE_MODE)
+			app = cmd.createNewAccount();
+		database.addUser(app);
+		Controller.save(database);
+	}
+	
 	/**
 	 * Assigns/removes a user to/from a shift
 	 * @param username
@@ -141,20 +161,13 @@ public class UIController {
 		else
 			return 0;
 	}
-	public void createNewAccount () {
-		Applicant app = null;
-		if (mode == COMMAND_LINE_MODE)
-			app = cmd.createNewAccount();
-		database.addUser(app);
-		Controller.save(database);
-	}
 	
 	//Basic functions to navigate UI and access information held in the database
 	public String getApplicantInfo () {
 		return ((Applicant)(currentUser)).info();
 	}
 	public String getCurrentUserSchedule () {
-            if(mode == COMMAND_LINE_MODE){
+            if(mode == COMMAND_LINE_MODE || mode == GUI_MODE){
                 return ((Employee)(currentUser)).scheduleString();
             }
             else{
@@ -192,12 +205,11 @@ public class UIController {
 		
 	}
 	public int[] mostRecentAsIntArray () {
-		Employee[] e = database.getEmployees();
 		int[] total = new int[WeeklySchedule.NUMBER_OF_SHIFTS];
-		for (int i = 0; i < e.length; i++) {
-			int[] shift = e[i].shiftAsIntArray();
-			for (int j = 0; j < total.length; j++)
-				total[j] += shift[j];
+		for (Employee e: database.getEmployees()) {
+			int[] shift = e.shiftAsIntArray();
+			for (int i = 0; i < total.length; i++)
+				total[i] += shift[i];
 		}
 		return total;
 	}
@@ -207,6 +219,7 @@ public class UIController {
 		database.removeUser(username);
 	}
 	//End of basic functions
+	
 	public void updateBasicInfo (String name, String phone, String email) {
 		currentUser.setName(name);
 		currentUser.setPhone(phone);
@@ -215,6 +228,7 @@ public class UIController {
 	public void updateResume (Resume resume) {
 		((Applicant)(currentUser)).setResume(resume);
 	}
+	
 	public String genPaycheck() {
 		Employee[] e = database.getEmployees();
 		String string = "";
@@ -225,6 +239,7 @@ public class UIController {
 		}
 		return string;
 	}
+	
 	public boolean hireApplicant(String username) {
 		if(database.hireApplicant(username))
 			return true;
