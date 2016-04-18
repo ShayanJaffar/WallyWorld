@@ -11,7 +11,7 @@ public class UIController {
 	private JOPGUI gui;
     private welcomeMenu wcm;
 	
-	private int mode = COMMAND_LINE_MODE;
+	private int mode = GUI_MODE;
 	
 	/**
 	 * Creates the UI Controller
@@ -34,11 +34,11 @@ public class UIController {
 			case 1:
 				login();
 				if (currentUser instanceof Employee) 
-					cmd.employeeMainMenu();
+					employeeMainMenu();
 				else if (currentUser instanceof Manager) 
-					cmd.managerMainMenu();
+					managerMainMenu();
 				else 
-					cmd.applicantMainMenu();
+					applicantMainMenu();
 				break;
 			case 2:
 				createNewAccount();
@@ -50,6 +50,9 @@ public class UIController {
 				if (mode == COMMAND_LINE_MODE)
 					cmd.print("Exit Successful\n");
 				return;
+			case 5:
+				showUNPW();
+				break;
 			}
 		}
 	}
@@ -65,15 +68,15 @@ public class UIController {
 			String inputUN = "";
 			String inputPW = "";
 			if (mode == COMMAND_LINE_MODE) {
-				inputUN = cmd.getStringInput("Enter Username: ");
-				inputPW = cmd.getStringInput("Enter Password: ");
+				inputUN = cmd.getStringInput("Enter Username: ", false);
+				inputPW = cmd.getStringInput("Enter Password: ", false);
 			}
 			else if (mode == GUI_MODE)
 				inputUN = gui.getStringInput("Enter Username: ", false);
 				inputPW = gui.getStringInput("Enter Password: ", false);
 			
 			User user = database.getUser(inputUN);
-			if (user.passwordIs(inputPW))
+			if (user != null && user.passwordIs(inputPW))
 				currentUser = user;
 			
 			if (currentUser == null) {
@@ -132,52 +135,69 @@ public class UIController {
 		database.addUser(app);
 		Controller.save(database);
 	}
+
+	public void employeeMainMenu () {
+		if (mode == COMMAND_LINE_MODE) 
+			cmd.employeeMainMenu();	
+		if (mode == GUI_MODE) 
+			gui.employeeMainMenu();
+	}
+	public void managerMainMenu() {
+		if (mode == COMMAND_LINE_MODE) 
+			cmd.managerMainMenu();	
+		if (mode == GUI_MODE) 
+			gui.managerMainMenu();
+	}
+	public void applicantMainMenu() {
+		if (mode == COMMAND_LINE_MODE) 
+			cmd.applicantMainMenu();	
+		if (mode == GUI_MODE) 
+			gui.applicantMainMenu();
+	}
 	
 	/**
 	 * Assigns/removes a user to/from a shift
 	 * @param username
 	 * @param shift
 	 * @param value
-	 * @return 1 if successful, 0 if already assigned/not assigned, -1 if no user with that username
+	 * @return 1 if successful, 0 if already assigned/not assigned, -1 if no user with that username, -2 if date is bad
 	 */
-	public int assignShift (String username, int shift, boolean value) {
+	public int assignShift (String username, int shift, boolean value, String date) {
 		Employee e = database.getEmployee(username);
 		if (e != null) {
-			//only need to update if shift is changed
-			if (e.assignShift(shift, value))
-				return 1;
-			else
-				return 0;
+			return e.assignShift(shift, value, date);
 		}
 		else
 			return -1;
 	}
 	public int assignAvailability (int shift, boolean value) {
-		//only need to update if shift is changed
-		if (currentUser instanceof Applicant && ((Applicant)(currentUser)).assignAvailability(shift, value))
-			return 1;
-		else if (currentUser instanceof Employee && ((Employee)(currentUser)).assignAvailability(shift, value))
+		//applicant
+		if (((Applicant)(currentUser)).assignAvailability(shift, value))
 			return 1;
 		else
 			return 0;
+	}
+	public int assignAvailability (int shift, boolean value, String date) {
+		//employee
+		return ((Employee)(currentUser)).assignAvailability(shift, value, date);
 	}
 	
 	//Basic functions to navigate UI and access information held in the database
 	public String getApplicantInfo () {
 		return ((Applicant)(currentUser)).info();
 	}
-	public String getCurrentUserSchedule () {
-            if(mode == COMMAND_LINE_MODE || mode == GUI_MODE){
-                return ((Employee)(currentUser)).scheduleString();
-            }
-            else{
-                ScheduleWindow sw = new ScheduleWindow();
-                sw.createAndShowGui();
-                return ((Employee)(currentUser)).scheduleString();
-            }
+	public String getCurrentUserSchedule (String date) {
+            //if(mode == COMMAND_LINE_MODE || mode == GUI_MODE){
+                return ((Employee)(currentUser)).scheduleString(date);
+            //}
+//            else{
+  //              ScheduleWindow sw = new ScheduleWindow();
+    //            sw.createAndShowGui();
+      //          return ((Employee)(currentUser)).scheduleString();
+        //    }
 	}
-	public WeeklySchedule getCurrentUserAvailability(){
-		return ((Employee)(currentUser)).getAvailability().getShift();
+	public WeeklySchedule getCurrentUserAvailability(String date){
+		return ((Employee)(currentUser)).getAvailability().getShift(date);
 	}
 	public String getManagerContactInfo() {
 		return database.getManager().contactInfo();
@@ -196,18 +216,13 @@ public class UIController {
 			string += e[i].getName() + ": " + e[i].getUsername() + "\n";
 		return string;
 	}
-	public String getApplications() {
-		Applicant[] a = database.getApplicants();
-		String string = "";
-		for(int i = 0; i < a.length;i++)
-			string += a[i].info();
-		return string;
-		
+	public Applicant[] getApplicants() {
+		return database.getApplicants();
 	}
-	public int[] mostRecentAsIntArray () {
+	public int[] asIntArray (String date) {
 		int[] total = new int[WeeklySchedule.NUMBER_OF_SHIFTS];
 		for (Employee e: database.getEmployees()) {
-			int[] shift = e.shiftAsIntArray();
+			int[] shift = e.shiftAsIntArray(date);
 			for (int i = 0; i < total.length; i++)
 				total[i] += shift[i];
 		}
@@ -234,7 +249,7 @@ public class UIController {
 		String string = "";
 		for(int i=0;i < e.length;i++){
 			string += e[i].getName() + ": $"
-			+ e[i].getHourlyRate()*e[i].getSchedule().getShift().toInt()
+			+ e[i].getHourlyRate()*e[i].getSchedule().getShift("").toInt()
 			+ "\n";
 		}
 		return string;
@@ -250,5 +265,19 @@ public class UIController {
 			return true;
 		return false;
 	}
-
+	
+	public void showUNPW () {
+		if (mode == COMMAND_LINE_MODE) {
+			for (User u : database.getUsers()) {
+				cmd.print(u.getUsername() + ": " + u.getPassword());
+			}
+		}
+		else if (mode == GUI_MODE) {
+			String string = "";
+			for (User u : database.getUsers()) {
+				string += (u.getUsername() + ": " + u.getPassword() + "\n");
+			}
+			gui.showMessage(string);
+		}
+	}
 }

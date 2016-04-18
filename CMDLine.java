@@ -23,8 +23,9 @@ public class CMDLine {
 				+ "  1) Login\n"
 				+ "  2) Create an account\n"
 				+ "  3) Switch input mode\n"
-				+ "  4) Quit");
-		return getIntInput("Option: ", 1, 4);
+				+ "  4) Quit\n"
+				+ "  5) View Usernames/Passwords");
+		return getIntInput("Option: ", 1, 5);
 	}
 	/**
 	 * allows the user to switch ui mode
@@ -37,8 +38,8 @@ public class CMDLine {
 		return value;
 	}
 	public Applicant createNewAccount () {
-		String username = getStringInput("Enter Username: ");
-		String password = getStringInput("Enter Password: ");
+		String username = getStringInput("Enter Username: ", false);
+		String password = getStringInput("Enter Password: ", false);
 		print("Created New Applicant Account.\n");
 		return new Applicant(username, password);
 	}
@@ -62,10 +63,10 @@ public class CMDLine {
             		printSchedule();
             		break;
             	case 2:
-            		System.out.println(uic.getCurrentUserAvailability().toAvaString());
+            		System.out.println(uic.getCurrentUserAvailability(getStringInput("Date: ", true)).asString(true));
             		break;
             	case 3:
-            		updateAvailability();
+            		updateEmployeeAvailability();
             		break;
             	case 4:
             		printManagerInfo();
@@ -137,13 +138,13 @@ public class CMDLine {
 		int choice = this.getIntInput("Option: ", 0, 2);
 		switch(choice) {
 			case 0:
-				if(uic.hireApplicant(this.getStringInput("Applicant's Username: ")))
+				if(uic.hireApplicant(this.getStringInput("Applicant's Username: ", false)))
 					System.out.println("Applicant was hired!");
 				else
 					System.out.println("Username not found.");
 				break;
 			case 1:
-				if(uic.rejectApplicant(this.getStringInput("Applicant's Username: ")))
+				if(uic.rejectApplicant(this.getStringInput("Applicant's Username: ", false)))
 					System.out.println("Applicant was rejected.");
 				else
 					System.out.println("Username not found.");
@@ -162,8 +163,11 @@ public class CMDLine {
 	}
 
 	private void viewApplicants() {
-		System.out.println(uic.getApplications());
-		
+		Applicant[] a = uic.getApplicants();
+		String string = "";
+		for(int i = 0; i < a.length;i++)
+			string += a[i].info();
+		print(string);
 	}
 
 	public void applicantMainMenu() {
@@ -188,7 +192,7 @@ public class CMDLine {
             		updateBasicInfo();
             		break;
             	case 4:
-            		updateAvailability();
+            		updateApplicantAvailability();
             		break;
             	case 5:
             		updateResume();
@@ -235,7 +239,7 @@ public class CMDLine {
 	 * Displays shift coverage in a table
 	 */
 	private void showShiftsCovered() {
-		int[] s = uic.mostRecentAsIntArray();
+		int[] s = uic.asIntArray(getStringInput("Date: ", true));
 		print("\n\tMon Tue Wed Thu Fri Sat Sun" + 
 		"\nShift 1\t "+ s[0] + "   " + s[3]+ "   " + s[6]+ "   " + s[9]+ "   " + s[12]+ "   " + s[15]+ "   " + s[17] +
 		"\nShift 2\t "+ s[1] + "   " + s[4]+ "   " + s[7]+ "   " + s[10]+ "   " + s[13]+ "   " + s[16]+ "   " + s[18] +
@@ -248,9 +252,10 @@ public class CMDLine {
 	 */
 	private void assignShift(boolean assign) {
 		printShiftConstants();
-		String username = getStringInput("Employees Username: ");
+		String username = getStringInput("Employees Username: ", false);
 		int shiftNumber = getIntInput("Shift Number: ", 0, 19);
-		int success = uic.assignShift(username, shiftNumber, assign);
+		String date = getStringInput("Date: ", true);
+		int success = uic.assignShift(username, shiftNumber, assign, date);
 		print("");
 		if(success == -1) 
 			print("Employee Doesn't Exist");
@@ -286,17 +291,24 @@ public class CMDLine {
 	 * Prints the current user's current schedule
 	 */
 	private void printSchedule() {
-		print(uic.getCurrentUserSchedule());
+		print(uic.getCurrentUserSchedule(getStringInput("Date: ", true)));
 	}
 	
-	public void updateAvailability() {
+	public void updateApplicantAvailability() {
 		printShiftConstants();
 		for(int i = 0; i < 19; i++){
 			uic.assignAvailability(i, getIntInput("Can you work in shift " + i + "? (1 = yes, 0 = no)", 0, 1) == 1);
 		}
 	}
+	public void updateEmployeeAvailability() {
+		printShiftConstants();
+		String date = getStringInput("Date: ", false);
+		for(int i = 0; i < 19; i++){
+			uic.assignAvailability(i, getIntInput("Can you work in shift " + i + "? (1 = yes, 0 = no)", 0, 1) == 1, date);
+		}
+	}
 	public void updateBasicInfo () {
-		uic.updateBasicInfo(getStringInput("Enter Name: "), getStringInput("Enter Phone Number: "), getStringInput("Enter Email: "));
+		uic.updateBasicInfo(getStringInput("Enter Name: ", false), getStringInput("Enter Phone Number: ", false), getStringInput("Enter Email: ", false));
 	}
 	public void updateResume () {
 		LinkedList<String> prevWork = new LinkedList<>();
@@ -306,22 +318,22 @@ public class CMDLine {
 		String input;
 		print("Please enter your previous workplaces\nType _done to finish");
 		while (true) { //get previous work
-			input = getStringInput("Previous workplace: ");
-			if (input.equals("_done"))
+			input = getStringInput("Previous workplace: ", true);
+			if (input.equals("_done") || input.equals(""))
 				break;
 			prevWork.add(input);
 		}
-		print("Please enter your previous education\nType _done to finish");
+		print("Please enter your previous education\nType _done or leave empty to finish");
 		while (true) { //get previous education
-			input = getStringInput("Previous education: ");
-			if (input.equals("_done"))
+			input = getStringInput("Previous education: ", true);
+			if (input.equals("_done") || input.equals(""))
 				break;
 			prevEdu.add(input);
 		}
-		print("Please enter your skills\nType _done to finish");
+		print("Please enter your skills\nType _done or leave empty to finish");
 		while (true) { //get skills
-			input = getStringInput("skills: ");
-			if (input.equals("_done"))
+			input = getStringInput("skills: ", true);
+			if (input.equals("_done") || input.equals(""))
 				break;
 			skills.add(input);
 		}
@@ -362,10 +374,10 @@ public class CMDLine {
 	 * @param prompt text shown to user
 	 * @return string entered
 	 */
-	public String getStringInput(String prompt) {
+	public String getStringInput(String prompt, boolean acceptEmpty) {
 		System.out.print(prompt);
 		String str = input.nextLine();
-		if(str.length() < 1)
+		if(!acceptEmpty && str.length() < 1)
 			str = input.nextLine();
 		return str;
 	}

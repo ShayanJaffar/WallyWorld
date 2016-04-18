@@ -1,10 +1,8 @@
 import java.util.LinkedList;
-import java.util.Scanner;
 
 import javax.swing.JOptionPane;
 
 public class JOPGUI {
-	public static Scanner input = new Scanner(System.in);
 	UIController uic;
     
 	/**
@@ -23,7 +21,8 @@ public class JOPGUI {
 			"1) Login\n", 
 			"2) Create an account\n", 
 			"3) Switch input mode\n", 
-			"4) Quit"
+			"4) Quit", 
+			"5) View Usernames/Passwords"
 		};
 		return getChoiceInput("Welcome to WallyWorld!\nWhat would you like to do?\n", options);
 	}
@@ -32,7 +31,7 @@ public class JOPGUI {
 	 * @return new mode to switch to (-1 if do not switch)
 	 */
 	public int getModeSwitch () {
-		String[] options = {"1) command line", "2) gui"};
+		String[] options = {"0) command line", "1) gui"};
 		return getChoiceInput("\nWould you like to switch user interface mode?\n", options);
 	}
 	public Applicant createNewAccount () {
@@ -62,10 +61,10 @@ public class JOPGUI {
             		printSchedule();
             		break;
             	case 2:
-            		System.out.println(uic.getCurrentUserAvailability().toAvaString());
+            		showMessage(uic.getCurrentUserAvailability(getStringInput("Date: ", false)).asString(true));
             		break;
             	case 3:
-            		updateAvailability();
+            		updateEmployeeAvailability();
             		break;
             	case 4:
             		printManagerInfo();
@@ -151,13 +150,13 @@ public class JOPGUI {
 	}
 	
 	private void generatePaychecks() {
-		System.out.println(uic.genPaycheck());
-		
+		showMessage(uic.genPaycheck());
 	}
 
 	private void viewApplicants() {
-		System.out.println(uic.getApplications());
-		
+		for (Applicant a : uic.getApplicants()) {
+			showMessage(a.info());
+		}
 	}
 
 	public void applicantMainMenu() {
@@ -183,7 +182,7 @@ public class JOPGUI {
             		updateBasicInfo();
             		break;
             	case 4:
-            		updateAvailability();
+            		updateApplicantAvailability();
             		break;
             	case 5:
             		updateResume();
@@ -225,11 +224,11 @@ public class JOPGUI {
 	 * Displays shift coverage in a table
 	 */
 	private void showShiftsCovered() {
-		int[] s = uic.mostRecentAsIntArray();
-		showMessage("\n\tMon Tue Wed Thu Fri Sat Sun" + 
-		"\nShift 1\t "+ s[0] + "   " + s[3]+ "   " + s[6]+ "   " + s[9]+ "   " + s[12]+ "   " + s[15]+ "   " + s[17] +
-		"\nShift 2\t "+ s[1] + "   " + s[4]+ "   " + s[7]+ "   " + s[10]+ "   " + s[13]+ "   " + s[16]+ "   " + s[18] +
-		"\nShift 3\t "+ s[2] + "   " + s[5]+ "   " + s[8]+ "   " + s[11]+ "   " + s[14] + "\n");
+		int[] s = uic.asIntArray(getStringInput("Date: ", false));
+		showMessage("            Mon Tue Wed Thu Fri Sat Sun" + 
+		"\nShift 1: "+ s[0] + "      " + s[3]+ "      " + s[6]+ "      " + s[9]+ "      " + s[12]+ "      " + s[15]+ "      " + s[17] +
+		"\nShift 2: "+ s[1] + "      " + s[4]+ "      " + s[7]+ "      " + s[10]+ "      " + s[13]+ "      " + s[16]+ "      " + s[18] +
+		"\nShift 3: "+ s[2] + "      " + s[5]+ "      " + s[8]+ "      " + s[11]+ "      " + s[14]);
 		
 	}
 	/**
@@ -246,8 +245,9 @@ public class JOPGUI {
 		
 		String username = getStringInput("Employees Username: ", false);
 		int shiftNumber = getIntInput(shiftConstants + "Shift Number: ", 0, 19);
+		String date = getStringInput("Date: ", false);
 		
-		int success = uic.assignShift(username, shiftNumber, assign);
+		int success = uic.assignShift(username, shiftNumber, assign, date);
 		if(success == -1) 
 			showMessage("Employee Doesn't Exist");
 		else if((success == 0) && assign) 
@@ -264,10 +264,26 @@ public class JOPGUI {
 	 * Prints the current user's current schedule
 	 */
 	private void printSchedule() {
-		showMessage(uic.getCurrentUserSchedule());
+		showMessage(uic.getCurrentUserSchedule(getStringInput("Date: ", false)));
 	}
 	
-	public void updateAvailability() {
+	public void updateEmployeeAvailability () {
+		String shiftConstants = "(M): Morning Shift, (A): Afternoon Shift, (E): Evening Shift\n" + 
+				"Shift  0:Mon(M)|Shift  1:Mon(A)|Shift  2:Mon(E)|Shift  3:Tue(M)|\n" + 
+				"Shift  4:Tue(A)|Shift  5:Tue(E)|Shift  6:Wed(M)|Shift  7:Wed(A)|\n" + 
+				"Shift  8:Wed(E)|Shift  9:Thu(M)|Shift 10:Thu(A)|Shift 11:Thu(E)|\n" + 
+				"Shift 12:Fri(M)|Shift 13:Fri(A)|Shift 14:Fri(E)|Shift 15:Sat(A)|\n" + 
+				"Shift 16:Sat(E)|Shift 17:Sun(A)|Shift 18:Sun(E)|\n\n";
+		String[] options = {"0) no", "1) yes"};
+		
+		String date = getStringInput("Date: ", false);
+		
+		
+		for(int i = 0; i < 19; i++){
+			uic.assignAvailability(i, getChoiceInput(shiftConstants + "Can you work in shift " + i, options) == 1, date);
+		}
+	}
+	public void updateApplicantAvailability() {
 		String shiftConstants = "(M): Morning Shift, (A): Afternoon Shift, (E): Evening Shift\n" + 
 				"Shift  0:Mon(M)|Shift  1:Mon(A)|Shift  2:Mon(E)|Shift  3:Tue(M)|\n" + 
 				"Shift  4:Tue(A)|Shift  5:Tue(E)|Shift  6:Wed(M)|Shift  7:Wed(A)|\n" + 
@@ -320,7 +336,6 @@ public class JOPGUI {
 	 * @return number entered (-1 if not an integer)
 	 */
 	private int getIntInput(String prompt) {
-		System.out.print(prompt);
 		try {
 			return Integer.parseInt(JOptionPane.showInputDialog(prompt));
 		} catch (Exception e) {

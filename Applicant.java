@@ -40,7 +40,7 @@ public class Applicant extends User {
 	}
 	
 	public String info () {
-		return contactInfo() + "\n\nAvailability\n" + availability.toAvaString() + "\nResume\n" + resume;
+		return contactInfo() + "\n\nAvailability\n" + availability.asString(false) + "\nResume\n" + resume;
 	}
 	
 	public boolean assignAvailability (int i, boolean value) {

@@ -33,6 +33,23 @@ public class Database {
 	public User getUser(String username) {
 		return userMap.get(username);
 	}
+	public User[] getUsers () {
+		User[] list = new User [userMap.size()];
+		int i = 0;
+		for(User u : employees) {
+			list[i] = u;
+			i++;
+		}
+		for(User u : managers) {
+			list[i] = u;
+			i++;
+		}
+		for(User u : applicants) {
+			list[i] = u;
+			i++;
+		}
+		return list;
+	}
 	/**
 	 * returns the employee with the specified username
 	 * @param username of the desired user

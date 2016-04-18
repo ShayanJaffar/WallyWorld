@@ -1,5 +1,3 @@
-import java.util.Date;
-
 import com.google.gson.annotations.Expose;
 
 public class Employee extends User {
@@ -56,38 +54,20 @@ public class Employee extends User {
 		hourlyRate = rate;
 	}
 	
-	public int[] shiftAsIntArray() {
-		return schedule.shiftAsIntArray(defaultSchedule);
-	}
-	public int[] shiftAsIntArray(int offset) {
-		return schedule.shiftAsIntArray(defaultSchedule, offset);
-	}
-	public int[] shiftAsIntArray(Date date) {
+	public int[] shiftAsIntArray(String date) {
 		return schedule.shiftAsIntArray(defaultSchedule, date);
 	}
 	
-	public boolean assignShift(int i, boolean value) {
-		return schedule.assignShift(defaultSchedule, i, value);
-	}
-	public boolean assignShift(int i, boolean value, int offset) {
-		return schedule.assignShift(defaultSchedule, i, value, offset);
-	}
-	public boolean assignShift(int i, boolean value, Date date) {
+	public int assignShift(int i, boolean value, String date) {
 		return schedule.assignShift(defaultSchedule, i, value, date);
 	}
 	
-	public boolean assignAvailability (int i, boolean value) {
-		return availability.assignShift(defaultAvailability, i, value);
-	}
-	public boolean assignAvailability (int i, boolean value, int offset) {
-		return availability.assignShift(defaultAvailability, i, value, offset);
-	}
-	public boolean assignAvailability (int i, boolean value, Date date) {
+	public int assignAvailability (int i, boolean value, String date) {
 		return availability.assignShift(defaultAvailability, i, value, date);
 	}
-
-	public String scheduleString() {
-		String string = schedule.toString();
+	
+	public String scheduleString(String date) {
+		String string = schedule.asString(date);
 		if (string != null)
 			return string;
 		else

@@ -38,6 +38,6 @@ public abstract class User {
 	}
 	
 	public String contactInfo () {
-		return "Username: " + username + "\tName: " + name + "\nEmail: " + email + "\tPhone: " + phone;
+		return "Username: " + username + ",  Name: " + name + "\nEmail: " + email + ",  Phone: " + phone;
 	}
 }
