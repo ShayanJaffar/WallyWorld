@@ -248,6 +248,8 @@ public class JOPGUI {
 		String date = getStringInput("Date: ", false);
 		
 		int success = uic.assignShift(username, shiftNumber, assign, date);
+		if(success == -2) 
+			showMessage("Invalid Date");
 		if(success == -1) 
 			showMessage("Employee Doesn't Exist");
 		else if((success == 0) && assign) 

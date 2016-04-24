@@ -136,39 +136,39 @@ public class Schedule {
 		}
 	}
 	
-	private String asString () {
+	private String asString (WeeklySchedule defaultSchedule) {
 		Date date = new Date();
-		return asString (date);
+		return asString (defaultSchedule, date);
 	}
-	private String asString (int offset) {
+	private String asString (WeeklySchedule defaultSchedule, int offset) {
 		Date date = new Date();
 		date.setTime(date.getTime() + offset*7*86400000);
-		return asString (date);
+		return asString (defaultSchedule, date);
 	}
-	private String asString (Date date) {
+	private String asString (WeeklySchedule defaultSchedule, Date date) {
 		for (WeeklySchedule weeklySchedule : shifts) {
 			if (weeklySchedule.containsDate(date))
 				return weeklySchedule.asString(true);
 		}
-		return null;
+		return defaultSchedule.asString(true);
 	}
-	public String asString (String date) {
+	public String asString (WeeklySchedule defaultSchedule, String date) {
 		if (date.equals("")) {
-			return asString();
+			return asString(defaultSchedule);
 		}
 		try {
 			int offset = Integer.parseInt(date);
-			return asString(offset);
+			return asString(defaultSchedule, offset);
 		}
 		catch (Exception exception1) {}
 		try {
 			String[] d = date.split("/");
 			assert (d.length == 3);
 			calendar.set(Integer.parseInt(d[2]), Integer.parseInt(d[0]), Integer.parseInt(d[1]));
-			return asString(calendar.getTime());
+			return asString(defaultSchedule, calendar.getTime());
 		}
 		catch (Exception exception2) {
-			return null;
+			return "Invalid Date";
 		}
 	}
 }

@@ -1,6 +1,3 @@
-import gui.ScheduleWindow;
-import gui.welcomeMenu;
-
 public class UIController {
 	public static final int COMMAND_LINE_MODE = 0;
 	public static final int GUI_MODE = 1;
@@ -9,7 +6,6 @@ public class UIController {
 	private User currentUser = null;
 	private CMDLine cmd;
 	private JOPGUI gui;
-    private welcomeMenu wcm;
 	
 	private int mode = GUI_MODE;
 	
@@ -62,7 +58,6 @@ public class UIController {
 	 * @param pW entered password of user
 	 */
         
-        //MUQTADAA CHANGED STUFF HERE 4/17/16
 	private void login() {
 		while (currentUser == null) {
 			String inputUN = "";
@@ -92,30 +87,22 @@ public class UIController {
 	 * Shows the welcome text/window/etc
 	 */
         
-        //MUQTADAA CHANGED STUFF HERE 4/17/16
 	private int welcomeOption () {
 		if (mode == COMMAND_LINE_MODE) {
 			return cmd.welcomeOption();
 		}
-		else if (mode == GUI_MODE) {
+		else { //(mode == GUI_MODE)
 			return gui.welcomeOption();
-		}
-		else {
-			wcm = new welcomeMenu();
-			return 1;
 		}
 	}
 	/**
 	 * Allows the user to switch to a different ui mode
 	 */
 	private void inputModeSwitch () {
-		int temp = -1;
 		if (mode == COMMAND_LINE_MODE) 
-			temp = cmd.getModeSwitch();	
-		if (mode == GUI_MODE) 
-			temp = gui.getModeSwitch();	
-		if (temp != -1) 
-			mode = temp;
+			mode = cmd.getModeSwitch();	
+		else if (mode == GUI_MODE) 
+			mode = gui.getModeSwitch();
 	}
 	/**
 	 * Logs out of the system
@@ -187,14 +174,7 @@ public class UIController {
 		return ((Applicant)(currentUser)).info();
 	}
 	public String getCurrentUserSchedule (String date) {
-            //if(mode == COMMAND_LINE_MODE || mode == GUI_MODE){
-                return ((Employee)(currentUser)).scheduleString(date);
-            //}
-//            else{
-  //              ScheduleWindow sw = new ScheduleWindow();
-    //            sw.createAndShowGui();
-      //          return ((Employee)(currentUser)).scheduleString();
-        //    }
+		return ((Employee)(currentUser)).scheduleString(date);
 	}
 	public WeeklySchedule getCurrentUserAvailability(String date){
 		return ((Employee)(currentUser)).getAvailability().getShift(date);

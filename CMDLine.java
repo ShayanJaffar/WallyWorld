@@ -257,6 +257,8 @@ public class CMDLine {
 		String date = getStringInput("Date: ", true);
 		int success = uic.assignShift(username, shiftNumber, assign, date);
 		print("");
+		if(success == -2) 
+			print("Invalid Date");
 		if(success == -1) 
 			print("Employee Doesn't Exist");
 		else if((success == 0) && assign) 

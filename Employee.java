@@ -10,9 +10,9 @@ public class Employee extends User {
 	@Expose
 	private int hourlyRate;
 	@Expose
-	private WeeklySchedule defaultSchedule;
+	private WeeklySchedule defaultSchedule = new WeeklySchedule();
 	@Expose
-	private WeeklySchedule defaultAvailability;
+	private WeeklySchedule defaultAvailability = new WeeklySchedule();
 	@Expose
 	private Resume resume;
 	
@@ -67,10 +67,6 @@ public class Employee extends User {
 	}
 	
 	public String scheduleString(String date) {
-		String string = schedule.asString(date);
-		if (string != null)
-			return string;
-		else
-			return defaultSchedule.toString();
+		return schedule.asString(defaultSchedule, date);
 	}
 }
