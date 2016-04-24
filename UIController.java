@@ -1,3 +1,4 @@
+
 import gui.ScheduleWindow;
 import gui.welcomeMenu;
 

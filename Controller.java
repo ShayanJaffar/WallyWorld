@@ -70,8 +70,10 @@ public class Controller {
      */
     public static void save(Database dB) {
         try (FileOutputStream fileStream = new FileOutputStream(filePath); Writer writer = new OutputStreamWriter(fileStream)) {
+        	
         	String unInfo = gsonFactory().toJson(dB);
         	writer.write(encrypt(unInfo));
+        	
             //gsonFactory().toJson(dB, writer);
         } catch (Exception ex) {
             System.out.println("error in saving the gson file: " + filePath);

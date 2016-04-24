@@ -22,6 +22,7 @@ public class Schedule {
 		return getShift(date);
 	}
 	private WeeklySchedule getShift (Date date) {
+		
 		for (WeeklySchedule weeklySchedule : shifts) {
 			if (weeklySchedule.containsDate(date))
 				return weeklySchedule;
@@ -30,6 +31,7 @@ public class Schedule {
 		WeeklySchedule weeklySchedule = new WeeklySchedule(date);
 		shifts.add(weeklySchedule);
 		return weeklySchedule;
+		
 	}
 	public WeeklySchedule getShift (String date) {
 		if (date.equals("")) {
@@ -108,6 +110,8 @@ public class Schedule {
 		return weeklySchedule.assignShift(i, value);
 	}
 	public int assignShift (WeeklySchedule defaultSchedule, int i, boolean value, String date) {
+		shifts.getFirst().shift[i] = value;
+		return 1; /*
 		if (date.equals("")) {
 			if (assignShift(defaultSchedule, i, value))
 				return 1;
@@ -133,7 +137,7 @@ public class Schedule {
 		}
 		catch (Exception exception2) {
 			return -2;
-		}
+		}*/
 	}
 	
 	private String asString () {

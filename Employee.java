@@ -67,10 +67,13 @@ public class Employee extends User {
 	}
 	
 	public String scheduleString(String date) {
+		return schedule.shifts.getFirst().asString(true);
+		/*
 		String string = schedule.asString(date);
 		if (string != null)
 			return string;
 		else
 			return defaultSchedule.toString();
+		*/
 	}
 }
