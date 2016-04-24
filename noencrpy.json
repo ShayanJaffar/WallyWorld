@@ -1,0 +1,151 @@
+{
+  "employees": [
+    {
+      "schedule": {
+        "shifts": [
+          {
+            "shift": [
+              true,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              true,
+              true,
+              false
+            ],
+            "date": "Apr 17, 2016 12:00:00 AM"
+          }
+        ]
+      },
+      "availability": {
+        "shifts": []
+      },
+      "hourlyRate": 10,
+      "resume": {
+        "prevWork": [],
+        "prevEdu": [],
+        "skills": []
+      },
+      "name": "John Smith",
+      "email": "11111@gmail.com",
+      "phone": "512-555-5555",
+      "username": "Johnny",
+      "password": "john"
+    },
+    {
+      "schedule": {
+        "shifts": [
+          {
+            "shift": [
+              false,
+              false,
+              false,
+              false,
+              true,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "date": "Apr 17, 2016 12:00:00 AM"
+          },
+          {
+            "shift": [
+              false,
+              false,
+              false,
+              false,
+              true,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "date": "Apr 24, 2016 12:00:00 AM"
+          }
+        ]
+      },
+      "availability": {
+        "shifts": [
+          {
+            "shift": [
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false,
+              false
+            ],
+            "date": "Apr 24, 2016 12:00:00 AM"
+          }
+        ]
+      },
+      "hourlyRate": 7,
+      "resume": {
+        "prevWork": [],
+        "prevEdu": [],
+        "skills": []
+      },
+      "name": "Zach Spofford",
+      "email": "zts140031@utdallas.edu",
+      "phone": "nah",
+      "username": "Spoofardio",
+      "password": "123456"
+    }
+  ],
+  "managers": [
+    {
+      "name": "Tim Farage",
+      "email": "timmyboy@utdallas.edu",
+      "phone": "512-444-4444",
+      "username": "Grandmaster",
+      "password": "password"
+    }
+  ],
+  "applicants": []
+}
