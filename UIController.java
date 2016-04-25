@@ -66,13 +66,17 @@ public class UIController {
 				inputUN = cmd.getStringInput("Enter Username: ", false);
 				inputPW = cmd.getStringInput("Enter Password: ", false);
 			}
-			else if (mode == GUI_MODE)
+			else if (mode == GUI_MODE) {
 				inputUN = gui.getStringInput("Enter Username: ", false);
 				inputPW = gui.getStringInput("Enter Password: ", false);
+			}
 			
 			User user = database.getUser(inputUN);
-			if (user != null && user.passwordIs(inputPW))
-				currentUser = user;
+			if (user != null) {
+				if (user.passwordIs(inputPW)) {
+					currentUser = user;
+				}
+			}
 			
 			if (currentUser == null) {
 				if (mode == COMMAND_LINE_MODE)
@@ -119,6 +123,8 @@ public class UIController {
 		Applicant app = null;
 		if (mode == COMMAND_LINE_MODE)
 			app = cmd.createNewAccount();
+		if (mode == GUI_MODE)
+			app = gui.createNewAccount();
 		database.addUser(app);
 		Controller.save(database);
 	}
@@ -173,11 +179,27 @@ public class UIController {
 	public String getApplicantInfo () {
 		return ((Applicant)(currentUser)).info();
 	}
-	public String getCurrentUserSchedule (String date) {
-		return ((Employee)(currentUser)).scheduleString(date);
+	public String getUserSchedule (String username, String date) {
+		if (username == null)
+			return ((Employee)(currentUser)).scheduleString(date);
+		else {
+			Employee e = database.getEmployee(username);
+			if (e != null)
+				return e.scheduleString(date);
+			else
+				return "Employee does not exist";
+		}
 	}
-	public WeeklySchedule getCurrentUserAvailability(String date){
-		return ((Employee)(currentUser)).getAvailability().getShift(date);
+	public String getUserAvailability(String username, String date){
+		if (username == null)
+			return ((Employee)(currentUser)).getAvailability().getShift(date).asString(true);
+		else {
+			Employee e = database.getEmployee(username);
+			if (e != null)
+				return e.getAvailability().getShift(date).asString(true);
+			else
+				return "Employee does not exist";
+		}
 	}
 	public String getManagerContactInfo() {
 		return database.getManager().contactInfo();
@@ -186,7 +208,7 @@ public class UIController {
 		Employee[] e = database.getEmployees();
 		String string = "";
 		for (int i = 0; i < e.length; i++)
-			string += e[i].contactInfo() + "\n";
+			string += e[i].contactInfo() + "\n\n";
 		return string;
 	}
 	public String getEmployeeNamesUsernames () {

@@ -16,9 +16,6 @@ public class Employee extends User {
 	@Expose
 	private Resume resume;
 	
-	public Employee() {
-	}
-
 	public Employee(Applicant applicant, int hourlyRate) {
 		super(applicant);
 		schedule = new Schedule();

@@ -20,23 +20,15 @@ public class Applicant extends User {
 		this.availability = availability;
 	}
 	
-	public Applicant () {}
-	//we need to make this consistent
 	public Applicant(String u, String p) {
-		setUsername(u);
-		//this.password = p;
+		super (u, p);
 		availability = new WeeklySchedule();
 		resume = new Resume();
 	}
-	//we need to make this consistent
 	public Applicant(Applicant old) {
-		setName(old.getEmail());
-		setEmail(old.getEmail());
-		setPhone(old.getPhone());
+		super(old); 
 		this.resume = old.getResume();
-		setUsername(old.getUsername());
 		this.availability = old.getAvailability();
-		//this.password = old.password;
 	}
 	
 	public String info () {

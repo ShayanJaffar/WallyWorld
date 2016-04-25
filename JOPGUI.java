@@ -37,7 +37,7 @@ public class JOPGUI {
 	public Applicant createNewAccount () {
 		String username = getStringInput("Enter Username: ", false);
 		String password = getStringInput("Enter Password: ", false);
-		showMessage("Created New Applicant Account.\n");
+		showMessage("Created New Applicant Account.");
 		return new Applicant(username, password);
 	}
 	
@@ -61,7 +61,7 @@ public class JOPGUI {
             		printSchedule();
             		break;
             	case 2:
-            		showMessage(uic.getCurrentUserAvailability(getStringInput("Date: ", false)).asString(true));
+            		showMessage(uic.getUserAvailability(null, getStringInput("Date: ", false)));
             		break;
             	case 3:
             		updateEmployeeAvailability();
@@ -83,43 +83,47 @@ public class JOPGUI {
 	public void managerMainMenu() {
         while (true) {
         	String[] options = {
-        		"1) Display Employee Usernames\n", 
+                "1) Display Employee Contact Information\n", 
         		"2) Show Shifts Covered\n", 
-                "3) Assign Shift\n", 
-                "4) Remove Shift\n", 
-                "5) Display Employee Contact Information\n", 
-                "6) View Applicants\n", 
-                "7) Hire/Reject Applicants\n", 
-                "8) Send Paychecks\n", 
-                "9) Logout\n"
+                "3) View an Employee's Schedule\n", 
+                "4) View an Employee's Availability\n", 
+                "5) Assign Shift\n", 
+                "6) Remove Shift\n", 
+                "7) View Applicants\n", 
+                "8) Hire/Reject Applicants\n", 
+                "9) Send Paychecks\n", 
+                "0) Logout\n"
             };
         	int choice = getChoiceInput(null, options);
             switch(choice) {
             	case 1:
-            		displayEmployeeUsernames();
+            		displayEmployeeInformation();
             		break;
             	case 2:
             		showShiftsCovered();
             		break;
-            	case 3:
-            		assignShift(true);
-            		break; 		
+            	case 3:	
+            		displayEmployeesSchedule();
+            		break;
             	case 4:
-            		assignShift(false);
+            		displayEmployeesAvailability();
             		break;
             	case 5:
-            		displayEmployeeInformation();
-            		break;
+            		assignShift(true);
+            		break; 
             	case 6:
-            		viewApplicants();
+            		assignShift(false);
             		break;
             	case 7:
-            		hireOrRejectApp();
+            		viewApplicants();
             		break;
             	case 8:
-            		generatePaychecks();
+            		hireOrRejectApp();
             		break;
             	case 9:
+            		generatePaychecks();
+            		break;
+            	case 0:
             		uic.logout();
             		return;
             }
@@ -212,7 +216,13 @@ public class JOPGUI {
 	private void printApplicantInfo() {
 		showMessage(uic.getApplicantInfo());
 	}
-	
+
+	private void displayEmployeesSchedule() {
+		showMessage(uic.getUserSchedule(getStringInput("Username: ", false), getStringInput("Date: ", true)));
+	}
+	private void displayEmployeesAvailability() {
+		showMessage(uic.getUserAvailability(getStringInput("Username: ", false), getStringInput("Date: ", true)));
+	}
 	/**
 	 * Displays all employee names and usernames
 	 */
@@ -266,7 +276,7 @@ public class JOPGUI {
 	 * Prints the current user's current schedule
 	 */
 	private void printSchedule() {
-		showMessage(uic.getCurrentUserSchedule(getStringInput("Date: ", false)));
+		showMessage(uic.getUserSchedule(null, getStringInput("Date: ", false)));
 	}
 	
 	public void updateEmployeeAvailability () {

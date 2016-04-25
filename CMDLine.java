@@ -63,7 +63,7 @@ public class CMDLine {
             		printSchedule();
             		break;
             	case 2:
-            		System.out.println(uic.getCurrentUserAvailability(getStringInput("Date: ", true)).asString(true));
+            		System.out.println(uic.getUserAvailability(null, getStringInput("Date: ", true)));
             		break;
             	case 3:
             		updateEmployeeAvailability();
@@ -88,42 +88,46 @@ public class CMDLine {
 	public void managerMainMenu() {
         while (true) {
         	print("\n*****************************************\n"
-        			+ "  1) Display Employee Usernames\n"
+                	+ "  1) Display Employee Contact Information\n"
         			+ "  2) Show Shifts Covered\n"
-                	+ "  3) Assign Shift\n"
-                	+ "  4) Remove Shift\n"
-                	+ "  5) Display Employee Contact Information\n"
-                	+ "  6) View Applicants\n"
-                	+ "  7) Hire/Reject Applicants\n"
-                	+ "  8) Send Paychecks\n"
-                	+ "  9) Logout\n");
+        			+ "  3) View an Employee's Schedule\n"
+        			+ "  4) View an Employee's Availability\n"
+                	+ "  5) Assign Shift\n"
+                	+ "  6) Remove Shift\n"
+                	+ "  7) View Applicants\n"
+                	+ "  8) Hire/Reject Applicants\n"
+                	+ "  9) Send Paychecks\n"
+                	+ "  0) Logout\n");
         	int choice = getIntInput("Option: ");
             switch(choice) {
             	case 1:
-            		displayEmployeeUsernames();
+            		displayEmployeeInformation();
             		break;
             	case 2:
             		showShiftsCovered();
             		break;
-            	case 3:
-            		assignShift(true);
-            		break; 		
+            	case 3:	
+            		displayEmployeesSchedule();
+            		break;
             	case 4:
-            		assignShift(false);
+            		displayEmployeesAvailability();
             		break;
             	case 5:
-            		displayEmployeeInformation();
-            		break;
+            		assignShift(true);
+            		break; 		
             	case 6:
-            		viewApplicants();
+            		assignShift(false);
             		break;
             	case 7:
-            		hireOrRejectApp();
+            		viewApplicants();
             		break;
             	case 8:
-            		generatePaychecks();
+            		hireOrRejectApp();
             		break;
             	case 9:
+            		generatePaychecks();
+            		break;
+            	case 0:
             		uic.logout();
             		return;
             	default:
@@ -226,6 +230,13 @@ public class CMDLine {
 	private void printApplicantInfo() {
 		print("\n" + uic.getApplicantInfo() + "\n");
 	}
+	private void displayEmployeesSchedule() {
+		print(uic.getUserSchedule(getStringInput("Username: ", false), getStringInput("Date: ", true)));
+	}
+	private void displayEmployeesAvailability() {
+		print(uic.getUserAvailability(getStringInput("Username: ", false), getStringInput("Date: ", true)));
+	}
+	
 	
 	/**
 	 * Displays all employee names and usernames
@@ -293,7 +304,7 @@ public class CMDLine {
 	 * Prints the current user's current schedule
 	 */
 	private void printSchedule() {
-		print(uic.getCurrentUserSchedule(getStringInput("Date: ", true)));
+		print(uic.getUserSchedule(null, getStringInput("Date: ", true)));
 	}
 	
 	public void updateApplicantAvailability() {

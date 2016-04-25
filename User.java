@@ -13,7 +13,17 @@ public abstract class User {
 	@Expose
 	private String password;
 	
-	public User () {};
+	public User (String username, String password) {
+		this.username = username;
+		this.password = password;
+	}
+	public User (String username, String password, String name, String phone, String email) {
+		this.username = username;
+		this.password = password;
+		this.name = name;
+		this.phone = phone;
+		this.email = email;
+	}
 	public User (User old) {
 		name = old.name;
 		email = old.email;
@@ -31,7 +41,7 @@ public abstract class User {
 	public void setEmail (String e) {email = e;}
 	public void setPhone (String p) {phone = p;}
 	public void setUsername (String u) {username = u;}
-	public void setPassword (String pw) {username = pw;}
+	public void setPassword (String pw) {password = pw;}
 	
 	public boolean passwordIs (String pw) {
 		return password.equals(pw);
