@@ -31,7 +31,7 @@ public abstract class User {
 	public void setEmail (String e) {email = e;}
 	public void setPhone (String p) {phone = p;}
 	public void setUsername (String u) {username = u;}
-	public void setPassword (String pw) {username = pw;}
+	public void setPassword (String pw) {password = pw;}
 	
 	public boolean passwordIs (String pw) {
 		return password.equals(pw);

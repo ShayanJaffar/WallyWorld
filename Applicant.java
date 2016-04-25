@@ -24,7 +24,7 @@ public class Applicant extends User {
 	//we need to make this consistent
 	public Applicant(String u, String p) {
 		setUsername(u);
-		//this.password = p;
+		setPassword(p);
 		availability = new WeeklySchedule();
 		resume = new Resume();
 	}
